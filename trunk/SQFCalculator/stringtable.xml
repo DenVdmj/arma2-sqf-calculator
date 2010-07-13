@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project name="RLS">
+<Package name="SQFConsole">
+
+<Key ID="STR:RLS:SQFConsole::DemoVoidFile"><English>SQFCalculator\html\demo.en.html</English><Russian>SQFCalculator\html\demo.ru.html</Russian></Key>
+<Key ID="STR:RLS:SQFConsole::HelpFile"><English>SQFCalculator\html\help.en.html</English><Russian>SQFCalculator\html\help.ru.html</Russian></Key>
+
+<Key ID="STR:RLS:SQFConsole::Title"><English>Calculator</English><Russian>Калькулятор</Russian></Key>
+<Key ID="STR:RLS:SQFConsole::Exec"><English>Exec</English><Russian>Выполнить</Russian></Key>
+<Key ID="STR:RLS:SQFConsole::Formated"><English>Result</English><Russian>Результат</Russian></Key>
+<Key ID="STR:RLS:SQFConsole::Display"><English>Buffer</English><Russian>Буфер</Russian></Key>
+<Key ID="STR:RLS:SQFConsole::History"><English>History</English><Russian>Истор!я</Russian></Key>
+<Key ID="STR:RLS:SQFConsole::Processes"><English>Processes</English><Russian>Процессы</Russian></Key>
+<Key ID="STR:RLS:SQFConsole::Demo"><English>Demo</English><Russian>Демо</Russian></Key>
+<Key ID="STR:RLS:SQFConsole::Help"><English>Help</English><Russian>Справка</Russian></Key>
+
+<Key ID="STR:RLS:SQFConsole::Watch"><English>Watch</English><Russian>Следить</Russian></Key>
+<Key ID="STR:RLS:SQFConsole::ConfigOutputMode:Full"><English>Full config</English><Russian>Полный конфиг</Russian></Key>
+<Key ID="STR:RLS:SQFConsole::ConfigOutputMode:AsIs"><English>As Is config</English><Russian>Стандартный конфиг</Russian></Key>
+<Key ID="STR:RLS:SQFConsole::ConfigOutputMode:Folded"><English>Folded config</English><Russian>Сворачивать конфиг</Russian></Key>
+<Key ID="STR:RLS:SQFConsole::ConfigOutputMode:ConfigOutputMode:toolTip"><English>Display config mode</English><Russian>Режим отображения конфига</Russian></Key>
+
+</Package>
+</Project>

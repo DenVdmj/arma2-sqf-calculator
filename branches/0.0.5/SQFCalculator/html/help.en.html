@@ -1,0 +1,54 @@
+﻿<html>
+<body>
+
+<h1 align="center"><a name="start"></a>Calculator sqf-expressions</h1><br>
+<p>This is very simple sqf-console is able to perform the expression and display the result in digestible format.
+To sqf-code type or paste it in the text-input and press <b>"Enter"</b>.
+<br><br>Formatted output is displayed in the <b>"Result"</b>. Try these examples:</p><br>
+<h6>
+    <a href="sqf:[weapons player, magazines player]"
+                >[weapons player, magazines player]</a><br>
+    <a href="sqf:configFile &gt;&gt; &quot;CfgVehicles&quot; &gt;&gt; typeOf vehicle player"
+                >configFile &gt;&gt; &quot;CfgVehicles&quot; &gt;&gt; typeOf vehicle player</a><br>
+    <a href="sqf:[getpos player nearObjects 100, configFile &gt;&gt; &quot;CfgWeapons&quot; &gt;&gt; &quot;Default&quot;]"
+                >[getpos player nearObjects 100, configFile &gt;&gt; &quot;CfgWeapons&quot; &gt;&gt; &quot;Default&quot;]</a>
+</h6>
+<br>
+<p>Pressing the key <b>"Ctrl+C"</b> or <b>"Ctrl+Insert"</b> in the <b>"Result"</b> copies the current line of result in the <b>"Buffer"</b>
+(in the ArmA2-version also in the clipboard) if the current line opens the container (open bracket or config classname),
+the entire contents of the container will be moved to the window to copy.</p>
+<br>
+<p>Each time the phrase is stored in history, double-click or keystroke <b>"Insert"</b> on the item list in the <b>"History"</b> will
+place the selected phrase in the box and executes it. Unwanted items <b>"history"</b> you can delete the key <b>"Delete"</b>.</p>
+<br>
+<p>Hot keys:<br>
+    alt +1 - switch focus to text-input<br>
+    alt +2 - switch focus to "Result"<br>
+    alt +3 - switch focus to "Edit"<br>
+    alt +4 - switch focus to "History"<br>
+    alt +5 - switch focus to "Demo"<br>
+    alt +6 - switch focus to "Help"<br>
+    alt +left arrow - switch focus to left neighbour<br>
+    alt +right arrow - switch focus to right neighbour</p>
+<br>
+
+<p>In the folder with your profile, you can create a subfolder "scripts\SQFCalculator", and place the file there "settings" as follows:</p><br>
+<h6>
+    _myHistory = [              // frequently used sqf-expression<br>
+        'weapons player',       // these lines will be added to an array of stories<br>
+        'magazines player'<br>
+    ];<br><br>
+    // Alt-hot-keys:<br>
+   _HKInput = 0x02;<br>
+   _HKDisplay = 0x03;<br>
+   _HKDisplay2 = 0x04;<br>
+   _HKHistory = 0x05;<br>
+   _HKDemo = 0x06;<br>
+   _HKHelp = 0x07;<br>
+   _HKLeft = 0xCB<br>
+   _HKRight = 0xCD<br>
+</p>
+</h6>
+
+</body>
+</html>

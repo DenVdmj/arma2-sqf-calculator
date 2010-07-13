@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project name="RLS">
+<Package name="SQFConsole">
+
+<Key ID="STR:RLS:SQFConsole::DemoVoidFile"><English>SQFCalculator\html\demo.en.html</English><Russian>SQFCalculator\html\demo.ru.html</Russian></Key>
+<Key ID="STR:RLS:SQFConsole::HelpFile"><English>SQFCalculator\html\help.en.html</English><Russian>SQFCalculator\html\help.ru.html</Russian></Key>
+
+<Key ID="STR:RLS:SQFConsole::Title"><English>Calculator</English><Russian>Калькулятор</Russian></Key>
+<Key ID="STR:RLS:SQFConsole::Exec"><English>Exec</English><Russian>Выполнить</Russian></Key>
+<Key ID="STR:RLS:SQFConsole::Formated"><English>Result</English><Russian>Результат</Russian></Key>
+<Key ID="STR:RLS:SQFConsole::Display"><English>Buffer</English><Russian>Буфер</Russian></Key>
+<Key ID="STR:RLS:SQFConsole::History"><English>History</English><Russian>Истор!я</Russian></Key>
+<Key ID="STR:RLS:SQFConsole::Demo"><English>Demo</English><Russian>Демо</Russian></Key>
+<Key ID="STR:RLS:SQFConsole::Help"><English>Help</English><Russian>Помощь</Russian></Key>
+
+</Package>
+</Project>
