@@ -1,6 +1,6 @@
 // sqf
 // Веселый Калькулятор - Calculador Alegre
-// Copyright (c) 2009-2010 Denis Usenko (DenVdmj)
+// Copyright (c) 2009-2010 Denis Usenko (DenVdmj@gmail.com)
 // MIT-style license
 
 #include "\SQFCalculator\common.hpp"
@@ -291,44 +291,49 @@ _self = _this;
             _list select 0;
         };
         _applySettingsFromFile = {
-            ((preprocessFile "SQFCalculator\settings") call {
-                if(_this != "") then {
-                    private _privateNames; // to safe our scope
-                    private [ // avialable parameters
-                        "_myHistory", "_maxTimeout",
-                        "_HKInput", "_HKDisplay", "_HKDisplay2", "_HKHistory",
-                        "_HKProcesses", "_HKDemo", "_HKHelp", "_HKLeft", "_HKRight"
-                    ];
-                    call compile _this;
-                    [ _myHistory, [
-                        ["HKInput", _HKInput],
-                        ["HKDisplay", _HKDisplay],
-                        ["HKDisplay2", _HKDisplay2],
-                        ["HKHistory", _HKHistory],
-                        ["HKDemo", _HKDemo],
-                        ["HKHelp", _HKHelp],
-                        ["HKLeft", _HKLeft],
-                        ["HKRight", _HKRight]
-                    ]];
-                };
-            }) call {
-                private "_regHK";
-                _regHK = {
-                    private ["_keyName", "_keyCode"];
-                    _keyName = arg(0);
-                    _keyCode = arg(1);
-                    if(parseNumber format["%1", _keyCode] != 0) then {
-                        (_hotKeysRegister find _keyName) call {
-                            if(_this > 0) then {
-                                _hotKeysRegister set [_this+1, _keyCode];
-                            }
+            private "_apply";
+            _apply = {
+                (_this call {
+                    if(_this != "") then {
+                        private _privateNames; // to safe our scope
+                        private [ // avialable parameters
+                            "_myHistory", "_maxTimeout",
+                            "_HKInput", "_HKDisplay", "_HKDisplay2", "_HKHistory",
+                            "_HKProcesses", "_HKDemo", "_HKHelp", "_HKLeft", "_HKRight"
+                        ];
+                        call compile _this;
+                        [ _myHistory, [
+                            ["HKInput", _HKInput],
+                            ["HKDisplay", _HKDisplay],
+                            ["HKDisplay2", _HKDisplay2],
+                            ["HKHistory", _HKHistory],
+                            ["HKDemo", _HKDemo],
+                            ["HKHelp", _HKHelp],
+                            ["HKLeft", _HKLeft],
+                            ["HKRight", _HKRight]
+                        ]];
+                    };
+                }) call {
+                    private "_regHK";
+                    _regHK = {
+                        private ["_keyName", "_keyCode"];
+                        _keyName = arg(0);
+                        _keyCode = arg(1);
+                        if(parseNumber format ["%1", _keyCode] != 0) then {
+                            (_hotKeysRegister find _keyName) call {
+                                if(_this > 0) then {
+                                    _hotKeysRegister set [_this+1, _keyCode];
+                                };
+                            };
                         };
                     };
+                    arg(0) call { if(typeName _this == "ARRAY") then { _this call _addToHistory; }; };
+                    arg(1) call { if(typeName _this == "SCALAR") then { _maxTimeout = _this; }; };
+                    { _x call _regHK } foreach arg(2);
                 };
-                arg(0) call { if(typeName _this == "ARRAY") then { _this call _addToHistory; }; };
-                arg(1) call { if(typeName _this == "SCALAR") then { _maxTimeout = _this; }; };
-                { _x call _regHK } foreach arg(2);
             };
+            (preprocessFile "userconfig\SQFCalculator\settings") call _apply;
+            (preprocessFile "SQFCalculator\settings") call _apply;
         };
         // sqf expression executor
         _execExpression = {

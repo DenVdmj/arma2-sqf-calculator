@@ -1,6 +1,6 @@
 // SQF
 //
-// Copyright (c) 2009 Denis Usenko (DenVdmj)
+// Copyright (c) 2009 Denis Usenko (DenVdmj@gmail.com)
 // MIT-style license
 //
 
