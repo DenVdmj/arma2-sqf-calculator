@@ -10,8 +10,8 @@ _this spawn {
     _ctrlXMLText ctrlSetPosition [safeZoneX + .01, safeZoneY + .02, .35, safeZoneH];
     _ctrlXMLText ctrlCommit 0;
 
-    _tpl = "<t size='0.8' align='right' color='#ffffff' shadow='true' shadowColor='#000000'>%1</t><br />"+
-        "<t size='0.4' align='right' shadow='false' color='#ffffff'>---------------------------------------------</t><br />";
+    _tpl = "<t size='0.8' align='right' color='#ffffff'>%1</t><br />"+
+        "<t size='0.4' align='right' color='#ffffff'>---------------------------------------------</t><br />";
 
     waitUntil {
         _xmlList = [];

@@ -182,7 +182,7 @@ class RscVdmjSqfCalculator {
                 align = "center";
                 shadow = 1;
             };
-            text = localFormat("<t size='1.3' align='center' shadow='true' shadowColor='#000000'>%1</t>", "Title");
+            text = localFormat("<t size='1.3' align='center'>%1</t>", "Title");
             moving = 1;
         };
     };

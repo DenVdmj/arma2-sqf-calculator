@@ -415,11 +415,11 @@ _self = _this;
             _collectInheritedProperties = {
                 private [
                     "_config", "_className",
-                    "_propertyName", "_propertyList",
-                    "_propertyNameLC", "_propertyNameLCList"
+                    "_propertyNameList", "_propertyNameLCList",
+                    "_propertyName", "_propertyNameLC"
                 ];
                 _config = _this;
-                _propertyList = [];
+                _propertyNameList = [];
                 _propertyNameLCList = [];
                 while {
                     _className = configName _config;
@@ -427,7 +427,7 @@ _self = _this;
                         _propertyName = _config select _i;
                         _propertyNameLC = toLower configName _propertyName;
                         if!(_propertyNameLC in _propertyNameLCList) then {
-                            push(_propertyList, _propertyName);
+                            push(_propertyNameList, _propertyName);
                             push(_propertyNameLCList, _propertyNameLC);
                         };
                     };
@@ -435,7 +435,7 @@ _self = _this;
                 } do {
                     _config = inheritsFrom _config;
                 };
-                _propertyList;
+                _propertyNameList;
             };
 
             _traverseConfigTree = {

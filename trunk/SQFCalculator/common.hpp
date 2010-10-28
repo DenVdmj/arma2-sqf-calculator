@@ -72,7 +72,7 @@
 #define forConf(list) call { private ["_x", "___n"]; ___n = list; for "_i" from 0 to count ___n -1 do { _x = ___n select _i; private "___n"; _x call _this; }; }
 #define mapArray(list) call { private "___r"; ___r = []; { ___r set [count ___r, call { private "___r"; _x call _this }] } foreach (list); ___r; }
 #define grepArray(list) call { private "___r"; ___r = []; { if( call { private "___r"; _x call _this } ) then { push(___r, _x) } } foreach (list); ___r; }
-#define map(list) call { private ["___r", "___n", "_x"]; ___r = []; ___n = list; for "_i" from 0 to count ___n -1 do { _x = ___n select _i; ___r set [count ___r, _x call { private ["___r", "___n"]; call _this }] }; ___r; }
+#define map(list) call { private ["___r", "___n", "_x"]; ___r = []; ___n = list; for "_i" from 0 to count ___n -1 do { _x = ___n select _i; ___r set [count ___r, call { private ["___r", "___n"]; call _this }] }; ___r; }
 #define grep(list) call { private ["___r", "___n", "_x"]; ___r = []; ___n = list; for "_i" from 0 to count ___n -1 do { _x = ___n select _i; if( call { private ["___r", "___n"]; _x call _this } ) then { push(___r, _x) } }; ___r; }
 
 //
