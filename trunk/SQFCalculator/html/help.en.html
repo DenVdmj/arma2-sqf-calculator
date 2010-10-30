@@ -2,9 +2,10 @@
 <body>
 
 <h1 align="center"><a name="start"></a>Calculator sqf-expressions</h1><br>
-<p>This is very simple sqf-console is able to perform the expression and display the result in digestible format.
-To sqf-code type or paste it in the text-input and press <b>"Enter"</b>.
-<br><br>Formatted output is displayed in the <b>"Result"</b>. Try these examples:</p><br>
+<p>This very simple console is able to execute the expression and display the result in digestible format.
+To execute code type or paste it in the input field and press <b>"Enter"</b>.
+<br><br>Formatted result will be displayed in the window <b>"Results"</b>, and you can edit it in the window <b>"Buffer"</b>.
+Try these examples:</p><br>
 <h6>
     <a href="sqf:[weapons player, magazines player]"
                 >[weapons player, magazines player]</a><br>
@@ -14,39 +15,73 @@ To sqf-code type or paste it in the text-input and press <b>"Enter"</b>.
                 >[getpos player nearObjects 100, configFile &gt;&gt; &quot;CfgWeapons&quot; &gt;&gt; &quot;Default&quot;]</a>
 </h6>
 <br>
-<p>Pressing the key <b>"Ctrl+C"</b> or <b>"Ctrl+Insert"</b> in the <b>"Result"</b> copies the current line of result in the <b>"Buffer"</b>
-(in the ArmA2-version also in the clipboard) if the current line opens the container (open bracket or config classname),
-the entire contents of the container will be moved to the window to copy.</p>
+<p>Hot keys <b>"Ctrl+C"</b> or <b>"Ctrl+Insert"</b> in the window <b>"Result"</b> puts the current line of result  on the clipboard.
+If the current line opens the some container, ie, it is opening bracket of an array or a class name of the config,
+then, in this case will be copied to the entire container.</p>
 <br>
-<p>Each time the phrase is stored in history, double-click or keystroke <b>"Insert"</b> on the item list in the <b>"History"</b> will
-place the selected phrase in the box and executes it. Unwanted items <b>"history"</b> you can delete the key <b>"Delete"</b>.</p>
+<p>All executed expressions are stored in the history.
+Double-click or keystroke <b>"Insert"</b> on the item of history puts the selected line in the input field and executes it.
+Unwanted items of <b>"History"</b> you can delete by pressing <b>"Delete"</b>.</p>
 <br>
-<p>Hot keys:<br>
-    alt +1 - switch focus to text-input<br>
-    alt +2 - switch focus to "Result"<br>
-    alt +3 - switch focus to "Edit"<br>
-    alt +4 - switch focus to "History"<br>
-    alt +5 - switch focus to "Demo"<br>
-    alt +6 - switch focus to "Help"<br>
-    alt +left arrow - switch focus to left neighbour<br>
-    alt +right arrow - switch focus to right neighbour</p>
+<p>Button "Watch" creates watcher screen for your code or variables  (will be displayed during the game in the top left corner).
+Unnecessary watchers can be killed in the "Processes".</p>
 <br>
-
-<p>In the folder with your profile, you can create a subfolder "scripts\SQFCalculator", and place the file there "settings" as follows:</p><br>
+<p>Button "As Is config" switches the display mode config:<br>
+    As Is config - is shown as is, without the inherited properties.<br>
+    Folded config - displays only the path in the config.<br>
+    Full config - is displayed with all inherited properties.</p>
+<br>
+<p>Hot keys:</p><br>
 <h6>
-    _myHistory = [              // frequently used sqf-expression<br>
-        'weapons player',       // these lines will be added to an array of stories<br>
-        'magazines player'<br>
-    ];<br><br>
-    // Alt-hot-keys:<br>
-   _HKInput = 0x02;<br>
-   _HKDisplay = 0x03;<br>
-   _HKDisplay2 = 0x04;<br>
-   _HKHistory = 0x05;<br>
-   _HKDemo = 0x06;<br>
-   _HKHelp = 0x07;<br>
-   _HKLeft = 0xCB<br>
-   _HKRight = 0xCD<br>
+    Enter       - execute sqf-expression<br>
+    Ctrl+Enter  - create watcher of sqf-expression<br>
+    Ctrl+C,<br>
+    Ctrl+Insert - copy line or block to clipboard<br>
+    Alt+]       - jump to the end of class or array<br>
+    Alt+[       - jump to the start of class or array<br>
+    Alt+1       - switch to text-input<br>
+    Alt+2       - switch to "Result"<br>
+    Alt+3       - switch to "Edit"<br>
+    Alt+4       - switch to "History"<br>
+    Alt+5       - switch to "Demo"<br>
+    Alt+6       - switch to "Help"<br>
+    Alt+Left Arrow  - switch focus to left neighbour<br>
+    Alt+Right Arrow - switch focus to right neighbour<br>
+</h6>
+<br>
+<p>
+You may create a initialization file:</p>
+<br>
+<h6>
+// File "arma2folder\userconfig\SQFCalculator\settings"<br>
+// Persistent history item, frequently used sqf-expression, snippets<br>
+  _myHistory = [<br>
+      'weapons player',<br>
+      'magazines player',<br>
+      'configFile >> "CfgVehicles" >> typeOf cursorTarget',<br>
+      'call compile preprocessFileLineNumbers ".sqf"'<br>
+  ];<br>
+<br>
+// Alt-hot-keys:<br>
+  _HKInput = 2;<br>
+  _HKDisplay = 3;<br>
+  _HKDisplay2 = 4;<br>
+  _HKHistory = 0x23;<br>
+  _HKProcesses = 0x24;<br>
+  _HKDemo = 0x20;<br>
+  _HKHelp = 0x3B;<br>
+  //_HKLeft =<br>
+  //_HKRight =<br>
+<br>
+//<br>
+// Casual shortcut<br>
+//<br>
+<br>
+  cfg = configFile;<br>
+  cfgA = configFile >> "CfgAmmo";<br>
+  cfgM = configFile >> "CfgMagazines";<br>
+  cfgW = configFile >> "CfgWeapons";<br>
+  cfgV = configFile >> "CfgVehicles";<br>
 </p>
 </h6>
 
