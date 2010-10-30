@@ -46,6 +46,8 @@ _self = _this;
         "_displayValue",
         "_joinString",
         "_copyFromListBoxToClipboard",
+        "_moveCurSelToOpeningBracket",
+        "_moveCurSelToClosingBracket",
         "_applySettingsFromFile",
         "_removeItemsFromArray"
     ];
@@ -99,16 +101,25 @@ _self = _this;
             call _execFromHistory
         },
         ["ResultFormated", "HistoryList"], "KeyDown", { // args: Control, KeyCodes, Shift, Ctrl, Alt
-            if(arg(3)) then { // Ctrl
-                if(arg(1) in [DIK_C, DIK_INSERT]) then {
-                    arg(0) call _copyFromListBoxToClipboard;
+            if(arg(3)) exitwith { // Ctrl
+                switch (arg(1)) do {
+                    case DIK_C:      { arg(0) call _copyFromListBoxToClipboard; };
+                    case DIK_INSERT: { arg(0) call _copyFromListBoxToClipboard; };
                 };
             };
-            if(arg(0) == _ctrlHistoryList) then { switch (arg(1)) do {
-                case DIK_INSERT: { call _setFromHistory; };
-                case DIK_DELETE: { call _delFromHistory; };
-                case DIK_RETURN: { call _execFromHistory; };
-            }};
+            if(arg(4)) exitwith { // Alt
+                switch (arg(1)) do {
+                    case DIK_LBRACKET: { arg(0) call _moveCurSelToOpeningBracket; };
+                    case DIK_RBRACKET: { arg(0) call _moveCurSelToClosingBracket; };
+                };
+            };
+            if(arg(0) == _ctrlHistoryList) exitwith {
+                switch (arg(1)) do {
+                    case DIK_INSERT: { call _setFromHistory; };
+                    case DIK_DELETE: { call _delFromHistory; };
+                    case DIK_RETURN: { call _execFromHistory; };
+                }
+            };
         },
         "ProcessList", "KeyDown", { // args: Control, KeyCodes, Shift, Ctrl, Alt
             if( arg(1) == DIK_DELETE ) then {
@@ -120,7 +131,7 @@ _self = _this;
             _arr = toArray str parseText arg(1);
             _arrCopy = +_arr;
             _colonIndex = _arr find 58; // 58 == code of char ":"
-            if(_colonIndex < 0)exitWith{};
+            if(_colonIndex < 0) exitwith {};
             _arrCopy set [_colonIndex, 0];
             _linkPrefix = toString(_arrCopy);
             for "_i" from 0 to _colonIndex do {
@@ -165,7 +176,7 @@ _self = _this;
         _getActiveWinSibling = {
             ((
                 for "_i" from 0 to count _windowStruct - 1 do {
-                    if( ctrlShown (_windowStruct select _i) )exitWith{ _i }; 0
+                    if( ctrlShown (_windowStruct select _i) ) exitwith { _i }; 0
                 }
             ) + _this) % count _windowStruct
         };
@@ -225,7 +236,7 @@ _self = _this;
             _buffer = [];
             _char0D0A = toString [13,10];
             for "_i" from _currentLine to count _resultCacheDepth - 1 do {
-                if( (_i > _currentLine) && (_resultCacheDepth select _i) <= _currentDepth )exitWith{
+                if( (_i > _currentLine) && (_resultCacheDepth select _i) <= _currentDepth ) exitwith {
                     if( _currentLine + 1 < _i ) then { push(_buffer, _resultCacheText select _i) };
                 };
                 push(_buffer, _resultCacheText select _i);
@@ -233,6 +244,30 @@ _self = _this;
             _result = [_buffer, _char0D0A] call _joinString;
             copyToClipboard _result;
             _ctrlResultText ctrlSetText _result;
+        };
+
+        _moveCurSelToOpeningBracket = {
+            private ["_listBox", "_currentLine", "_currentDepth"];
+            _listBox = _this;
+            _currentLine = lbCurSel _listBox;
+            _currentDepth = _resultCacheDepth select _currentLine;
+            for "_i" from _currentLine to 0 step -1 do {
+                if( (_i < _currentLine) && (_resultCacheDepth select _i) <= _currentDepth ) exitwith {
+                    _listBox lbSetCurSel _i;
+                };
+            };
+        };
+
+        _moveCurSelToClosingBracket = {
+            private ["_listBox", "_currentLine", "_currentDepth"];
+            _listBox = _this;
+            _currentLine = lbCurSel _listBox;
+            _currentDepth = _resultCacheDepth select _currentLine;
+            for "_i" from _currentLine to count _resultCacheDepth - 1 do {
+                if( (_i > _currentLine) && (_resultCacheDepth select _i) <= _currentDepth ) exitwith {
+                    _listBox lbSetCurSel _i;
+                };
+            };
         };
 
         _addProcess = {
@@ -414,28 +449,26 @@ _self = _this;
 
             _collectInheritedProperties = {
                 private [
-                    "_config", "_className",
-                    "_propertyNameList", "_propertyNameLCList",
-                    "_propertyName", "_propertyNameLC"
+                    "_config", "_properties", "_propertiesLC",
+                    "_property", "_propertyLC"
                 ];
                 _config = _this;
-                _propertyNameList = [];
-                _propertyNameLCList = [];
+                _properties = [];
+                _propertiesLC = [];
                 while {
-                    _className = configName _config;
                     for "_i" from 0 to count _config - 1 do {
-                        _propertyName = _config select _i;
-                        _propertyNameLC = toLower configName _propertyName;
-                        if!(_propertyNameLC in _propertyNameLCList) then {
-                            push(_propertyNameList, _propertyName);
-                            push(_propertyNameLCList, _propertyNameLC);
+                        _property = _config select _i;
+                        _propertyLC = toLower configName _property;
+                        if!(_propertyLC in _propertiesLC) then {
+                            push(_properties, _property);
+                            push(_propertiesLC, _propertyLC);
                         };
                     };
-                    _className != "";
+                    configName _config != "";
                 } do {
                     _config = inheritsFrom _config;
                 };
-                _propertyNameList;
+                _properties;
             };
 
             _traverseConfigTree = {
@@ -462,7 +495,7 @@ _self = _this;
                         };
                     };
                 };
-                if( isClass _this ) exitWith {
+                if( isClass _this ) exitwith {
                     "class " + _confName + (
                         configName inheritsFrom _this call {
                             if( _this == "" ) then { "" } else { " : " + _this }
