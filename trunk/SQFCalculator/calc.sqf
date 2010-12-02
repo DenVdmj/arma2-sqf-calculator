@@ -276,7 +276,7 @@ _self = _this;
             if( ! isNil { call _code } ) then {
                 if( isNil '__hudFlag' ) then {
                     __hudFlag = true;
-                    cutRsc ["RscVdmjSqfCalculatorHUD", "PLAIN"];
+                    78934 cutRsc ["RscVdmjSqfCalculatorHUD", "PLAIN"];
                 };
                 push((__processListRef select 0), compile _this);
                 call _updateProcessList;
@@ -367,8 +367,8 @@ _self = _this;
                     { _x call _regHK } foreach arg(2);
                 };
             };
-            (preprocessFile "userconfig\SQFCalculator\settings") call _apply;
-            (preprocessFile "SQFCalculator\settings") call _apply;
+            (preprocessFile "\userconfig\SQFCalculator\settings") call _apply;
+            //(preprocessFile "SQFCalculator\settings") call _apply;
         };
         // sqf expression executor
         _execExpression = {
