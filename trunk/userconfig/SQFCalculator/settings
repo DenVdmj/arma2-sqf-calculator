@@ -34,7 +34,8 @@ _myHistory = [
     {"Show secondary weapon player"; configFile >> "CfgWeapons" >> secondaryWeapon player},
     // Включает телепортиртацию группы игрока по клику на карте
     {"Teleport player group"; onMapSingleClick {{ _x setpos _pos } foreach units player; true}},
-    {"SetEnv" call compile preprocessFileLineNumbers "userconfig\SQFCalculator\envs\set.sqf"},
+    {"SetEnv" call compile preprocessFileLineNumbers "\userconfig\SQFCalculator\envs\set.sqf"},
+    {[configFile >> "CfgVehicles"] call compile preprocessFileLineNumbers "\userconfig\SQFCalculator\dumpConfig.sqf"},
     // Сниппеты
     {"Ikarus" call SQFCALC_findClassInConfig},
     {cursorTarget setObjectTexture [0, "tex\"]},
