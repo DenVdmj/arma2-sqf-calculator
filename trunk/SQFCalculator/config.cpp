@@ -17,7 +17,7 @@ class CfgMods {
         hidePicture = "true";
         hideName = "true";
         actionName = "Website";
-        action = "http://www.google.ru/search?q=arma2+DenVdmj+SQFCalculator";
+        action = "http://code.google.com/p/arma2-sqf-calculator/";
     };
 };
 

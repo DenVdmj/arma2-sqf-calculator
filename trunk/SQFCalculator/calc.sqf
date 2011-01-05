@@ -190,16 +190,26 @@ _self = _this;
             _ctrlHistoryList lbSetCurSel ((lbSize _ctrlHistoryList - 1) min (lbCurSel _ctrlHistoryList));
         };
         _addToHistory = {
+            private "_toString";
+            _toString = {
+                if(typeName _this == "STRING") exitwith { _this };
+                if(typeName _this == "CODE") exitwith {
+                    _chars = toArray str _this;
+                    _chars resize (count _chars-1);
+                    _chars set [0, 62];
+                    str parseText ("< " + toString _chars);
+                };
+                "";
+            };
             {
+                _x = _x call _toString;
                 if(_x != "") then {
                     [_commandsHistory, [_x]] call _removeItemsFromArray;
                     push(_commandsHistory, _x);
                     call _updateHistory;
                 }
             } foreach (
-                if(typeName _this == "ARRAY") then { _this } else {
-                    [(if(typeName _this != "STRING") then { "" } else { _this })]
-                }
+                if(typeName _this == "ARRAY") then { _this } else { [_this] }
             );
         };
         _execFromHistory = {
