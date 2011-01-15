@@ -194,10 +194,13 @@ _self = _this;
             _toString = {
                 if(typeName _this == "STRING") exitwith { _this };
                 if(typeName _this == "CODE") exitwith {
+                    private "_res";
+                    _res = [];
                     _chars = toArray str _this;
-                    _chars resize (count _chars-1);
-                    _chars set [0, 62];
-                    str parseText ("< " + toString _chars);
+                    for "_i" from 1 to count _chars-2 do {
+                        push(_res, _chars select _i);
+                    };
+                    toString _res;
                 };
                 "";
             };

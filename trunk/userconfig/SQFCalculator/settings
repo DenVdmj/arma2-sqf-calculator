@@ -17,7 +17,6 @@ _myHistory = [
     {"Show all game cars"; _a = []; _c = configFile >> "CfgVehicles"; for "_i" from 0 to count _c -1 do {_x = _c select _i; if( isClass _x ) then { if( getText (_x >> "simulation") == "car" && getNumber (_x >> "scope") > 0 ) then { _a set [count _a, configName _x] } }; }; _a},
     {"Show animation sources of vehicle player"; configFile >> "cfgVehicles" >> typeof vehicle player >> "AnimationSources"},
     {"Show animation sources of cursorTarget"; configFile >> "cfgVehicles" >> typeof cursorTarget >> "AnimationSources"},
-    {"Show animation sources of cursor target"; configFile >> "cfgVehicles" >> typeof cursorTarget >> "AnimationSources"},
     // {"Show nearest objects"; _c = []; { _c set [count _c, [_x, typeof _x]] } foreach nearestObjects [player, [], 20]; _c},
     {"Show nearest objects"; _c = []; { _c set [count _c, [str _x, if(isClass(configFile >> "CfgVehicles" >> typeof _x)) then { getText(configFile >> "CfgVehicles" >> typeof _x >> "model") } else { str _x call SQFCALC_GetModelName }, typeof _x]] } foreach nearestObjects [player, [], 20]; _c},
     {"Show crew roles"; cursorTarget call SQFCALC_GetCrewRoles},
@@ -63,7 +62,7 @@ SQFCALC_CursorTargetWatcher = {
         _conf = configFile >> "CfgVehicles" >> _type;
         SQFCALC_TargetCursorConf = _conf;
         format [
-            "%1<br />class %2 : %3<br />%4<br />%5",
+            "%1<br />class %2 : %3<br />%4<br />%5<br />%6",
             getText(_conf >> "displayName"),
             _type,
             configName inheritsFrom _conf,
@@ -72,7 +71,8 @@ SQFCALC_CursorTargetWatcher = {
                 name cursorTarget
             } else {
                 getText(_conf >> "Library" >> "libTextDesc")
-            }
+            },
+            cursorTarget
         ];
     } else {
         "void";

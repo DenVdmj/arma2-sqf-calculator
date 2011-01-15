@@ -43,10 +43,11 @@ class RscStructuredText;
 //class RscStandardDisplay;
 class RscDisplayEmpty;
 
-#define setOnKeyDownEH onKeyDown = "if((_this select 1) == 41) then { (_this select 0) call compile preprocessFileLineNumbers '\SQFCalculator\calc.sqf'; }; nil; ";
+#define setOnKeyDownEH_ onKeyDown = "if((_this select 1)==41)then{if(isNil{missionNamespace getVariable'\SQFCalculator\calc.sqf'})then{missionNamespace setVariable['\SQFCalculator\calc.sqf',compile preprocessFileLineNumbers'\SQFCalculator\calc.sqf']};(_this select 0)call(missionNamespace getVariable'\SQFCalculator\calc.sqf')}else{_this execVM'\ca\ui\scripts\mainmenuShortcuts.sqf'};nil";
+#define setOnKeyDownEH onKeyDown = "if((_this select 1)==41)then{if(isNil{missionNamespace getVariable'\SQFCalculator\calc.sqf'})then{missionNamespace setVariable['\SQFCalculator\calc.sqf',compile preprocessFileLineNumbers'\SQFCalculator\calc.sqf']};(_this select 0)call(missionNamespace getVariable'\SQFCalculator\calc.sqf')};nil";
 
 class RscStandardDisplay { setOnKeyDownEH };
-class RscDisplayMain : RscStandardDisplay { setOnKeyDownEH };
+class RscDisplayMain : RscStandardDisplay { setOnKeyDownEH_ };
 class RscDisplayInterrupt : RscStandardDisplay { setOnKeyDownEH };
 class RscDisplayMPInterrupt : RscStandardDisplay { setOnKeyDownEH };
 class RscDisplayArcadeMap { setOnKeyDownEH };

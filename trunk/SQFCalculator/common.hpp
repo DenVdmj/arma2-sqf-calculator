@@ -4,7 +4,7 @@
 // MIT-style license
 //
 
-#define __project_prefix vdmj
+#define __project_prefix vdmj/calc
 
 #define __project_var_prefix __project_prefix##_var_
 #define __project_func_prefix __project_prefix##_func_
