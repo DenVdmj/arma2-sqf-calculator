@@ -25,6 +25,17 @@ More examples:
     [configFile >> "RscEdit", true] call compile preprocessFileLineNumbers "dumpConfig.sqf"
     [configFile >> "RscToolbox", true] call compile preprocessFileLineNumbers "dumpConfig.sqf"
 
+For several classes:
+    [
+        [
+            configFile >> "RscTitle",
+            configFile >> "RscEdit",
+            configFile >> "RscToolbox",
+            configFile >> "RscCheckBox"
+        ],
+        true
+    ] call compile preprocessFileLineNumbers "dumpConfig.sqf"
+
 Warning: don't attempt to get a large classes with switched on parameter "IncludeInheritedPropertiesFlag", eg don't do so:
 
     [configFile, true] call compile preprocessFileLineNumbers "dumpConfig.sqf"
@@ -58,7 +69,8 @@ Dump the entire config, it can take over ten seconds:
         [
             configFile >> "RscTitle",
             configFile >> "RscEdit",
-            configFile >> "RscToolbox"
+            configFile >> "RscToolbox",
+            configFile >> "RscCheckBox"
         ],
         true
     ] call compile preprocessFileLineNumbers "dumpConfig.sqf"

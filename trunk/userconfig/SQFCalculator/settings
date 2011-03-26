@@ -8,17 +8,15 @@
 //
 
 _myHistory = [
-    // Show all weapons and magazines that uses turrets of vehicle under cursor
-    {"Show turrets weapons"; cursorTarget call SQFCALC_GetTurretsWeapons},
+    {"Show all weapons, magazines and pathes that uses turrets of vehicle under cursor"; cursorTarget call SQFCALC_GetTurretsWeapons},
     // Press Insert and before Ctrl+Enter, or click button Watch
     {"Watcher CursorTarget"; call SQFCALC_CursorTargetWatcher},
     {"Config of cursor target"; configFile >> "CfgVehicles" >> typeof cursorTarget},
-    {"Show all game weapons"; _a = []; _c = configFile >> "CfgWeapons"; for "_i" from 0 to count _c -1 do { _x = _c select _i; if( isClass _x ) then { if( getNumber (_x >> "scope") > 0 ) then { _a set [count _a, configName _x] } }; }; _a},
-    {"Show all game cars"; _a = []; _c = configFile >> "CfgVehicles"; for "_i" from 0 to count _c -1 do {_x = _c select _i; if( isClass _x ) then { if( getText (_x >> "simulation") == "car" && getNumber (_x >> "scope") > 0 ) then { _a set [count _a, configName _x] } }; }; _a},
+    {"Show all game weapons"; _a = []; _c = configFile >> "CfgWeapons"; for "_i" from 0 to count _c -1 do { _x = _c select _i; if (isClass _x) then { if (getNumber (_x >> "scope") > 0) then { _a set [count _a, configName _x] } }; }; _a},
+    {"Show all game cars"; _a = []; _c = configFile >> "CfgVehicles"; for "_i" from 0 to count _c -1 do {_x = _c select _i; if (isClass _x) then { if (getText (_x >> "simulation") == "car" && getNumber (_x >> "scope") > 0) then { _a set [count _a, configName _x] } }; }; _a},
     {"Show animation sources of vehicle player"; configFile >> "cfgVehicles" >> typeof vehicle player >> "AnimationSources"},
     {"Show animation sources of cursorTarget"; configFile >> "cfgVehicles" >> typeof cursorTarget >> "AnimationSources"},
-    // {"Show nearest objects"; _c = []; { _c set [count _c, [_x, typeof _x]] } foreach nearestObjects [player, [], 20]; _c},
-    {"Show nearest objects"; _c = []; { _c set [count _c, [str _x, if(isClass(configFile >> "CfgVehicles" >> typeof _x)) then { getText(configFile >> "CfgVehicles" >> typeof _x >> "model") } else { str _x call SQFCALC_GetModelName }, typeof _x]] } foreach nearestObjects [player, [], 20]; _c},
+    {"Show nearest objects"; _c = []; { _c set [count _c, [str _x, if (isClass(configFile >> "CfgVehicles" >> typeof _x)) then { getText(configFile >> "CfgVehicles" >> typeof _x >> "model") } else { str _x call SQFCALC_GetModelName }, typeof _x]] } foreach nearestObjects [player, [], 20]; _c},
     {"Show crew roles"; cursorTarget call SQFCALC_GetCrewRoles},
     {"Show primary weapon player config"; configFile >> "CfgWeapons" >> primaryWeapon player},
     {"Show secondary weapon player config"; configFile >> "CfgWeapons" >> secondaryWeapon player},
@@ -35,6 +33,13 @@ _myHistory = [
     {call compile preprocessFileLineNumbers ""}
 ];
 
+#define arg(x) (_this select (x))
+#define argIf(x) if(count _this > (x))
+#define argIfType(x,t) if(argIf(x)then{typeName arg(x) == (t)}else{false})
+#define argSafe(x) argIf(x)then{arg(x)}
+#define argSafeType(x,t) argIfType(x,t)then{arg(x)}
+#define argOr(x,v) (argSafe(x)else{v})
+
 // Helpers
 SQFCALC_findClassInConfig = {
     private ["_classname", "_traverse", "_result"];
@@ -42,8 +47,8 @@ SQFCALC_findClassInConfig = {
     _result = [];
     _traverse = {
         private "_confName";
-        if( isClass _this ) exitwith {
-            if(configName _this == _classname) then {
+        if (isClass _this) exitwith {
+            if (configName _this == _classname) then {
                 _result set [count _result, [str _this, _this]];
             };
             for "_i" from 0 to count _this - 1 do {
@@ -57,7 +62,7 @@ SQFCALC_findClassInConfig = {
 
 SQFCALC_CursorTargetWatcher = {
     private ["_type", "_conf"];
-    if( ! isNull cursorTarget ) then {
+    if (!isNull cursorTarget) then {
         _type = typeof cursorTarget;
         _conf = configFile >> "CfgVehicles" >> _type;
         SQFCALC_TargetCursorConf = _conf;
@@ -67,7 +72,7 @@ SQFCALC_CursorTargetWatcher = {
             _type,
             configName inheritsFrom _conf,
             getText(_conf >> "model"),
-            if( getNumber(_conf >> "isMan") == 1 ) then {
+            if (getNumber(_conf >> "isMan") == 1) then {
                 name cursorTarget
             } else {
                 getText(_conf >> "Library" >> "libTextDesc")
@@ -98,9 +103,12 @@ SQFCALC_GetCrewRoles = {
     _list;
 };
 
+// Example:
+// cursorTarget call SQFCALC_GetTurretsWeapons
+// "M1A2_US_TUSK_MG_EP1" call SQFCALC_GetTurretsWeapons
+//
 SQFCALC_GetTurretsWeapons = {
-    private ["_weapons",  "_result", "_getAnyMagazines", "_findRecurse"];
-    _weapons = [];
+    private ["_result", "_getAnyMagazines", "_findRecurse", "_class"];
     _result = [];
     _getAnyMagazines = {
         private ["_weapon", "_mags"];
@@ -108,44 +116,81 @@ SQFCALC_GetTurretsWeapons = {
         _mags = [];
         {
             _mags = _mags + getArray (
-                ( if(_x == "this")then{ _weapon }else{ _weapon >> _x } ) >> "magazines"
+                (if (_x == "this") then { _weapon } else { _weapon >> _x }) >> "magazines"
             )
         } foreach getArray (_weapon >> "muzzles");
         _mags
     };
     _findRecurse = {
-        for "_i" from 0 to count _this -1 do {
-            (_this select _i) call {
-                if( isClass _this ) then {
-                    _weapons = _weapons + getArray ( _this >> "weapons" );
-                    (_this >> "turrets") call {
-                        if( isClass _this ) then _findRecurse;
-                    };
+        private ["_root", "_class", "_path", "_currentPath"];
+        _root = arg(0);
+        _path = +arg(1);
+        for "_i" from 0 to count _root -1 do {
+            _class = _root select _i;
+            if (isClass _class) then {
+                _currentPath = _path + [_i];
+                {
+                    _result set [count _result, [_x, _x call _getAnyMagazines, _currentPath]];
+                } foreach getArray (_class >> "weapons");
+                _class = _class >> "turrets";
+                if (isClass _class) then {
+                    [_class, _currentPath] call _findRecurse;
                 };
             };
         };
     };
-    (
+    _class = (
         configFile >> "CfgVehicles" >> (
-            switch typeName _this do {
+            switch (typeName _this) do {
                 case "STRING" : {_this};
                 case "OBJECT" : {typeOf _this};
                 default {nil}
             }
         ) >> "turrets"
-    ) call _findRecurse;
-    {
-        _result set [count _result, [
-            _x, _x call _getAnyMagazines
-        ]];
-    } foreach _weapons;
+    );
+    [_class, []] call _findRecurse;
     _result;
+};
+
+// Example:
+// [typeOf cursorTarget, "M240_veh_2"] call SQFCALC_GetTurretPath
+// ["M1A2_US_TUSK_MG_EP1", "M240_veh_2"] call SQFCALC_GetTurretPath
+//
+
+SQFCALC_GetTurretPath = {
+    private ["_result", "_getAnyMagazines", "_findRecurse", "_class"];
+    _findRecurse = {
+        private ["_root", "_class", "_path", "_currentPath"];
+        _root = arg(0);
+        _path = +arg(1);
+        for "_i" from 0 to count _root -1 do {
+            _class = _root select _i;
+            if (isClass _class) then {
+                _currentPath = _path + [_i];
+                if (_weaponClass in getArray (_class >> "weapons")) then {
+                    throw _currentPath;
+                };
+                _class = _class >> "turrets";
+                if (isClass _class) then {
+                    [_class, _currentPath] call _findRecurse;
+                };
+            };
+        };
+    };
+    _vehicleClass = arg(0);
+    _weaponClass = arg(1);
+    try {
+        [configFile >> "CfgVehicles" >> _vehicleClass >> "turrets", []] call _findRecurse;
+        [];
+    } catch {
+        _exception
+    };
 };
 
 SQFCALC_GetModelName = {
     _this = toArray _this;
     for "_i" from 0 to count _this - 1 do {
-        if( _this select _i == 32 ) exitwith {
+        if (_this select _i == 32) exitwith {
             _this set [_i, 62];
             str parseText ("< " + toString _this);
         };
@@ -154,17 +199,17 @@ SQFCALC_GetModelName = {
 
 SQFCALC_FindAllDisplay = {
     private ["_displayList", "_display", "_ctrlList", "_ctrl", "_n", "_m"];
-    _n = if(count _this > 0) then { _this select 0 };
-    _m = if(count _this > 1) then { _this select 1 };
+    _n = argOr(0, 1000);
+    _m = argOr(1, 1000);
     _displayList = [];
-    for "_i" from 0 to 1000 do {
+    for "_i" from 0 to _n do {
         _display = findDisplay _i;
-        if( ! isNull _display ) then {
+        if (! isNull _display) then {
             _ctrlList = [];
             _displayList set [count _displayList, [_display, _ctrlList]];
-            for "_i" from 0 to 1000 do {
+            for "_i" from 0 to _m do {
                 _ctrl = _display displayCtrl _i;
-                if( ! isNull _ctrl ) then {
+                if (! isNull _ctrl) then {
                     _ctrlList set [count _ctrlList, _ctrl];
                 };
             };
@@ -210,7 +255,9 @@ _maxTimeout = 120;
 //
 
 cfg = configFile;
-cfgA = configFile >> "CfgAmmo";
-cfgM = configFile >> "CfgMagazines";
-cfgW = configFile >> "CfgWeapons";
-cfgV = configFile >> "CfgVehicles";
+cfga = configFile >> "CfgAmmo";
+cfgm = configFile >> "CfgMagazines";
+cfgw = configFile >> "CfgWeapons";
+cfgv = configFile >> "CfgVehicles";
+mcfg = missionConfigFile;
+ccfg = campaignConfigFile;
