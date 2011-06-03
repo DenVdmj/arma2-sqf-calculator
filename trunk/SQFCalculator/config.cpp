@@ -43,8 +43,10 @@ class RscStructuredText;
 //class RscStandardDisplay;
 class RscDisplayEmpty;
 
-#define setOnKeyDownEH_ onKeyDown = "if((_this select 1)==41)then{if(isNil{missionNamespace getVariable'\SQFCalculator\calc.sqf'})then{missionNamespace setVariable['\SQFCalculator\calc.sqf',compile preprocessFileLineNumbers'\SQFCalculator\calc.sqf']};(_this select 0)call(missionNamespace getVariable'\SQFCalculator\calc.sqf')}else{_this execVM'\ca\ui\scripts\mainmenuShortcuts.sqf'};nil";
-#define setOnKeyDownEH onKeyDown = "if((_this select 1)==41)then{if(isNil{missionNamespace getVariable'\SQFCalculator\calc.sqf'})then{missionNamespace setVariable['\SQFCalculator\calc.sqf',compile preprocessFileLineNumbers'\SQFCalculator\calc.sqf']};(_this select 0)call(missionNamespace getVariable'\SQFCalculator\calc.sqf')};nil";
+__EXEC( call compile preprocessFileLineNumbers '\SQFCalculator\getSettingsToParsingNamespace.sqf' );
+
+#define setOnKeyDownEH_ onKeyDown = "if((_this select 1)==(parsingNamespace getVariable '/SQFCalculator/HKOpenConsole'))then{if(isNil{missionNamespace getVariable'\SQFCalculator\calc.sqf'})then{missionNamespace setVariable['\SQFCalculator\calc.sqf',compile preprocessFileLineNumbers'\SQFCalculator\calc.sqf']};(_this select 0)call(missionNamespace getVariable'\SQFCalculator\calc.sqf')}else{_this execVM'\ca\ui\scripts\mainmenuShortcuts.sqf'};nil";
+#define setOnKeyDownEH onKeyDown = "if((_this select 1)==(parsingNamespace getVariable '/SQFCalculator/HKOpenConsole'))then{if(isNil{missionNamespace getVariable'\SQFCalculator\calc.sqf'})then{missionNamespace setVariable['\SQFCalculator\calc.sqf',compile preprocessFileLineNumbers'\SQFCalculator\calc.sqf']};(_this select 0)call(missionNamespace getVariable'\SQFCalculator\calc.sqf')};nil";
 
 class RscStandardDisplay { setOnKeyDownEH };
 class RscDisplayMain : RscStandardDisplay { setOnKeyDownEH_ };

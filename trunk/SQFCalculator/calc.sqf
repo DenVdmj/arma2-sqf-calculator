@@ -346,38 +346,48 @@ _self = _this;
                         private _privateNames; // to safe our scope
                         private [ // avialable parameters
                             "_myHistory", "_maxTimeout",
-                            "_HKInput", "_HKDisplay", "_HKDisplay2", "_HKHistory",
+                            "_HKOpenConsole", "_HKInput", "_HKDisplay", "_HKDisplay2", "_HKHistory",
                             "_HKProcesses", "_HKDemo", "_HKHelp", "_HKLeft", "_HKRight"
                         ];
                         call compile _this;
-                        [ _myHistory, [
-                            ["HKInput", _HKInput],
-                            ["HKDisplay", _HKDisplay],
-                            ["HKDisplay2", _HKDisplay2],
-                            ["HKHistory", _HKHistory],
-                            ["HKDemo", _HKDemo],
-                            ["HKHelp", _HKHelp],
-                            ["HKLeft", _HKLeft],
-                            ["HKRight", _HKRight]
-                        ]];
+                        [ 
+                            _myHistory, _maxTimeout,
+                            [
+                                ["HKOpenConsole", _HKOpenConsole],
+                                ["HKInput", _HKInput],
+                                ["HKDisplay", _HKDisplay],
+                                ["HKDisplay2", _HKDisplay2],
+                                ["HKHistory", _HKHistory],
+                                ["HKDemo", _HKDemo],
+                                ["HKHelp", _HKHelp],
+                                ["HKLeft", _HKLeft],
+                                ["HKRight", _HKRight]
+                            ]
+                        ];
                     };
                 }) call {
+                    QWE = [];
                     private "_regHK";
                     _regHK = {
-                        private ["_keyName", "_keyCode"];
+                        private ["_keyName", "_keyCode", "_index"];
                         _keyName = arg(0);
                         _keyCode = arg(1);
+                        QWE set [count QWE, str _this];
                         if(parseNumber format ["%1", _keyCode] != 0) then {
-                            (_hotKeysRegister find _keyName) call {
-                                if(_this > 0) then {
-                                    _hotKeysRegister set [_this+1, _keyCode];
-                                };
+                            _index = _hotKeysRegister find _keyName;
+                            if(_index > 0) then {
+                                _hotKeysRegister set [_index+1, _keyCode];
+                            };
+                            if(_keyName == "HKOpenConsole") then {
+                                parsingNamespace setVariable ['/SQFCalculator/HKOpenConsole', _keyCode];
                             };
                         };
                     };
                     arg(0) call { if(typeName _this == "ARRAY") then { _this call _addToHistory; }; };
                     arg(1) call { if(typeName _this == "SCALAR") then { _maxTimeout = _this; }; };
-                    { _x call _regHK } foreach arg(2);
+                    { 
+                        _x call _regHK
+                    } foreach arg(2);
                 };
             };
             (preprocessFile "\userconfig\SQFCalculator\settings") call _apply;
