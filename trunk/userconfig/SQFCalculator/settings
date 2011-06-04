@@ -8,29 +8,112 @@
 //
 
 _myHistory = [
-    {"Show all weapons, magazines and pathes that uses turrets of vehicle under cursor"; cursorTarget call SQFCALC_GetTurretsWeapons},
+    {
+        "Show all weapons, magazines and pathes that uses turrets of vehicle under cursor";
+        cursorTarget call SQFCALC_GetTurretsWeapons
+    },
     // Press Insert and before Ctrl+Enter, or click button Watch
-    {"Watcher CursorTarget"; call SQFCALC_CursorTargetWatcher},
-    {"Config of cursor target"; configFile >> "CfgVehicles" >> typeof cursorTarget},
-    {"Show all game weapons"; _a = []; _c = configFile >> "CfgWeapons"; for "_i" from 0 to count _c -1 do { _x = _c select _i; if (isClass _x) then { if (getNumber (_x >> "scope") > 0) then { _a set [count _a, configName _x] } }; }; _a},
-    {"Show all game cars"; _a = []; _c = configFile >> "CfgVehicles"; for "_i" from 0 to count _c -1 do {_x = _c select _i; if (isClass _x) then { if (getText (_x >> "simulation") == "car" && getNumber (_x >> "scope") > 0) then { _a set [count _a, configName _x] } }; }; _a},
-    {"Show animation sources of vehicle player"; configFile >> "cfgVehicles" >> typeof vehicle player >> "AnimationSources"},
-    {"Show animation sources of cursorTarget"; configFile >> "cfgVehicles" >> typeof cursorTarget >> "AnimationSources"},
-    {"Show nearest objects"; _c = []; { _c set [count _c, [str _x, if (isClass(configFile >> "CfgVehicles" >> typeof _x)) then { getText(configFile >> "CfgVehicles" >> typeof _x >> "model") } else { str _x call SQFCALC_GetModelName }, typeof _x]] } foreach nearestObjects [player, [], 20]; _c},
-    {"Show crew roles"; cursorTarget call SQFCALC_GetCrewRoles},
-    {"Show primary weapon player config"; configFile >> "CfgWeapons" >> primaryWeapon player},
-    {"Show secondary weapon player config"; configFile >> "CfgWeapons" >> secondaryWeapon player},
-    {"Find all current display"; [1000, 1000] call SQFCALC_FindAllDisplay},
-    {"Add teleport player group"; onMapSingleClick {{ _x setpos _pos } foreach units player; true}},
-    {"env1" call compile preprocessFileLineNumbers "\userconfig\SQFCalculator\envs\set.sqf"},
-    {[configFile >> "CfgVehicles"] call compile preprocessFileLineNumbers "\userconfig\SQFCalculator\dumpConfig.sqf"},
+    {
+        "Watcher CursorTarget";
+        call SQFCALC_CursorTargetWatcher
+    },
+    {
+        "Config of cursor target";
+        configFile >> "CfgVehicles" >> typeof cursorTarget
+    },
+    {
+        "Show all game weapons";
+        [configFile >> "CfgWeapons", {
+            if (isClass _x) then {
+                if (getNumber (_x >> "scope") > 0) then {
+                    configName _x
+                }
+            }
+        }] call SQFCALC_MapGrep
+    },
+    {
+        "Show all game cars";
+        [configFile >> "CfgVehicles", {
+            if (isClass _x) then {
+                if (getNumber (_x >> "scope") > 0 &&
+                    getText (_x >> "simulation") == "car"
+                ) then {
+                    configName _x
+                }
+            }
+        }] call SQFCALC_MapGrep
+    },
+    {
+        "Show all modules";
+        [configFile >> "CfgVehicles", {
+            if (isClass _x) then {
+                if (getNumber (_x >> "scope") > 0 &&
+                    getText (_x >> "vehicleClass") == "Modules"
+                ) then {
+                    configName _x
+                }
+            }
+        }] call SQFCALC_MapGrep
+    },
+    {
+        "Show animation sources of vehicle player";
+        configFile >> "cfgVehicles" >> typeof vehicle player >> "AnimationSources"
+    },
+    {
+        "Show animation sources of cursorTarget";
+        configFile >> "cfgVehicles" >> typeof cursorTarget >> "AnimationSources"
+    },
+    {
+        "Show nearest objects";
+        _c = []; { _c set [count _c, [str _x, if (isClass(configFile >> "CfgVehicles" >> typeof _x)) then { getText(configFile >> "CfgVehicles" >> typeof _x >> "model") } else { str _x call SQFCALC_GetModelName }, typeof _x]] } foreach nearestObjects [player, [], 20]; _c
+    },
+    {
+        "Show crew roles";
+        cursorTarget call SQFCALC_GetCrewRoles
+    },
+    {
+        "Show primary weapon player config";
+        configFile >> "CfgWeapons" >> primaryWeapon player
+    },
+    {
+        "Show secondary weapon player config";
+        configFile >> "CfgWeapons" >> secondaryWeapon player
+    },
+    {
+        "Find all current display";
+        [1000, 1000] call SQFCALC_FindAllDisplay
+    },
+    {
+        "Add teleport player group";
+        onMapSingleClick {{ _x setpos _pos } foreach units player; true}
+    },
+    {
+        "env1" call compile preprocessFileLineNumbers "\userconfig\SQFCalculator\envs\set.sqf"
+    },
+    {
+        [configFile >> "CfgVehicles"] call compile preprocessFileLineNumbers "\userconfig\SQFCalculator\dumpConfig.sqf"
+    },
     // Snippets
-    {"Ikarus" call SQFCALC_findClassInConfig},
-    {cursorTarget setObjectTexture [0, "tex\"]},
-    {_car = "" createVehicleLocal (screenToWorld [.5,.5]); _car setObjectTexture [0, ""]; player reveal _car},
-    {configFile >> "cfgVehicles" >> typeof cursorTarget >> "HitPoints"},
-    {cursorTarget setHit [getText (configFile >> "cfgVehicles" >> typeof cursorTarget >> "HitPoints" >> "HitVRotor" >> "name"), 1]},
-    {call compile preprocessFileLineNumbers ""}
+    {
+        "Ikarus" call SQFCALC_findClassInConfig
+    },
+    {
+        cursorTarget setObjectTexture [0, "tex\"]
+    },
+    {
+        _car = "" createVehicleLocal (screenToWorld [.5,.5]);
+        _car setObjectTexture [0, ""];
+        player reveal _car
+    },
+    {
+        configFile >> "cfgVehicles" >> typeof cursorTarget >> "HitPoints"
+    },
+    {
+        cursorTarget setHit [getText (configFile >> "cfgVehicles" >> typeof cursorTarget >> "HitPoints" >> "HitVRotor" >> "name"), 1]
+    },
+    {
+        call compile preprocessFileLineNumbers ""
+    }
 ];
 
 #define arg(x) (_this select (x))
@@ -39,8 +122,25 @@ _myHistory = [
 #define argSafe(x) argIf(x)then{arg(x)}
 #define argSafeType(x,t) argIfType(x,t)then{arg(x)}
 #define argOr(x,v) (argSafe(x)else{v})
+#define push(a,v) (a)set[count(a),(v)]
 
 // Helpers
+SQFCALC_MapGrep = {
+    private ["_SC0PE_", "_x"];
+    _SC0PE_ = ["_SC0PE_", "_C0NF_", "_Fi1T3R_", "_1iST_", "_1_"];
+    private _SC0PE_;
+    _C0NF_ = arg(0);
+    _Fi1T3R_ = arg(1);
+    _1iST_ = [];
+    for "_1_" from 0 to count _C0NF_ -1 do {
+        _x = _C0NF_ select _1_;
+        _Fi1T3R_ call { private _SC0PE_; _x call _this } call {
+            push(_1iST_, _this);
+        };
+    };
+    _1iST_;
+};
+
 SQFCALC_findClassInConfig = {
     private ["_classname", "_traverse", "_result"];
     _classname = _this;
@@ -152,6 +252,44 @@ SQFCALC_GetTurretsWeapons = {
     _result;
 };
 
+SQFCALC_GetVehicleTurrets = {
+    private ["_findRecurse", "_result", "_class"];
+    _findRecurse = {
+        private ["_root", "_class", "_path", "_currentPath"];
+        _root = arg(0);
+        _path = +arg(1);
+        for "_i" from 0 to count _root -1 do {
+            _class = _root select _i;
+            if (isClass _class) then {
+                _currentPath = _path + [_i];
+                _result set [count _result, _currentPath];
+                _class = _class >> "turrets";
+                if (isClass _class) then {
+                    [_class, _currentPath] call _findRecurse;
+                };
+            };
+        };
+    };
+    _result = [];
+    [configFile >> "CfgVehicles" >> _this >> "turrets", []] call _findRecurse;
+    _result;
+};
+
+SQFCALC_GetVehicleWeapons = {
+    private ["_weapons", "_mainTurret", "_turret"];
+    _weapons = [];
+    _mainTurret = configFile >> "CfgVehicles" >> _this;
+    {
+        _turret = _mainTurret;
+        {
+            _turret = (_turret >> "turrets") select _x;
+        } foreach _x;
+        _weapons = _weapons + getArray (_turret >> "weapons");
+    } foreach (_this call SQFCALC_GetVehicleTurrets);
+    _weapons;
+};
+
+
 // Example:
 // [typeOf cursorTarget, "M240_veh_2"] call SQFCALC_GetTurretPath
 // ["M1A2_US_TUSK_MG_EP1", "M240_veh_2"] call SQFCALC_GetTurretPath
@@ -239,6 +377,9 @@ _maxTimeout = 120;
 //
 // Codes keyboard shortcuts, with clamped alt
 //
+// 
+//_HKOpenConsole = 0x3B; // F1 key
+//_HKOpenConsole = 0x29; // tilda key 
 //_HKInput = 2;
 //_HKDisplay = 3;
 //_HKDisplay2 = 4;

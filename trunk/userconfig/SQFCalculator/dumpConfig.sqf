@@ -116,7 +116,7 @@ _joinString = {
     _list = arg(0);
     _char = arg(1);
 
-    if( count _list < 1 ) exitwith {""};
+    if (count _list < 1) exitwith {""};
 
     for "" from 1 to ceil(log2(count _list)) do {
         _size = count _list / 2;
@@ -127,7 +127,7 @@ _joinString = {
             _list set [_i, (_list select _j) + _char + (_list select (_j+1))];
             _j = _j + 2;
         };
-        if( _subsize != _oversize ) then { // to add a tail
+        if (_subsize != _oversize) then { // to add a tail
             _list set [_j/2, _list select _j];
         };
         _list resize _oversize;
@@ -140,13 +140,13 @@ _escapeString = {
     private ["_source", "_target", "_start", "_charCode"];
     _source = toArray _this;
     _start = _source find 34;
-    if(_start > 0) then {
+    if (_start > 0) then {
         _target = +_source;
         _target resize _start;
         for "_i" from _start to count _source - 1 do {
             _charCode = _source select _i;
             push(_target, _charCode);
-            if(_charCode == 34) then {
+            if (_charCode == 34) then {
                 push(_target, _charCode);
             };
         };
@@ -168,7 +168,7 @@ _collectInheritedProperties = {
         for "_i" from 0 to count _config - 1 do {
             _property = _config select _i;
             _propertyName = toLower configName _property;
-            if!(_propertyName in _propertyNamesLC) then {
+            if !(_propertyName in _propertyNamesLC) then {
                 push(_properties, _property);
                 push(_propertyNamesLC, _propertyName);
             };
@@ -192,7 +192,7 @@ _dumpConfigTree = {
     _indents = [""];
     _depth = 0;
     _pushLine = {
-        if(_depth >= count _indents) then {
+        if (_depth >= count _indents) then {
             _indents set [_depth, (_indents select _depth-1) + "    "];
         };
         push(_result, (_indents select _depth) + _this);
@@ -201,22 +201,22 @@ _dumpConfigTree = {
     _traverse = {
         private "_confName";
         _confName = configName _this;
-        if( isText _this ) exitwith {
+        if (isText _this) exitwith {
             _confName + " = " + (getText _this call _escapeString) + ";" call _pushLine;
         };
-        if( isNumber _this ) exitwith {
+        if (isNumber _this) exitwith {
             _confName + " = " + str getNumber _this + ";" call _pushLine;
         };
-        if( isArray _this ) exitwith {
+        if (isArray _this) exitwith {
             _confName + "[] = " + (getArray _this call _traverseArray) + ";" call _pushLine;
         };
-        if( isClass _this ) exitwith {
+        if (isClass _this) exitwith {
             "class " + _confName + (
                 configName inheritsFrom _this call {
-                    if( _this == "" || !_specifyParentClass ) then { "" } else { " : " + _this }
+                    if (_this == "" || !_specifyParentClass) then { "" } else { " : " + _this }
                 }
             ) + " {" call _pushLine;
-            if( _includeInheritedProperties ) then {
+            if (_includeInheritedProperties) then {
                 _this = _this call _collectInheritedProperties;
             };
             _depth = _depth + 1;
@@ -229,7 +229,7 @@ _dumpConfigTree = {
     };
 
     _traverseArray = {
-        if(typeName _this == "array") exitwith {
+        if (typeName _this == "array") exitwith {
             private "_array";
             _array = [];
             for "_i" from 0 to count _this - 1 do {
@@ -237,14 +237,16 @@ _dumpConfigTree = {
             };
             "{" + ([_array, ", "] call _joinString) + "}";
         };
-        if(typeName _this == "string") exitwith {
+        if (typeName _this == "string") exitwith {
             _this call _escapeString;
         };
         str _this;
     };
 
-    if(typeName arg(0) == "ARRAY") then {
-        { _x call _traverse; } foreach arg(0);
+    if (typeName arg(0) == "ARRAY") then {
+        { 
+            _x call _traverse; 
+        } foreach arg(0);
     } else {
         arg(0) call _traverse;
     };
