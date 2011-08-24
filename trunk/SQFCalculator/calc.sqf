@@ -366,13 +366,11 @@ _self = _this;
                         ];
                     };
                 }) call {
-                    //QWE = [];
                     private "_regHK";
                     _regHK = {
                         private ["_keyName", "_keyCode", "_index"];
                         _keyName = arg(0);
                         _keyCode = arg(1);
-                        //QWE set [count QWE, str _this];
                         if(parseNumber format ["%1", _keyCode] != 0) then {
                             _index = _hotKeysRegister find _keyName;
                             if(_index > 0) then {
