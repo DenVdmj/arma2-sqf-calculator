@@ -2,23 +2,228 @@
 <Project name="RLS">
 <Package name="SQFConsole">
 
-<Key ID="STR:RLS:SQFConsole::DemoVoidFile"><English>SQFCalculator\html\demo.en.html</English><Russian>SQFCalculator\html\demo.ru.html</Russian></Key>
-<Key ID="STR:RLS:SQFConsole::HelpFile"><English>SQFCalculator\html\help.en.html</English><Russian>SQFCalculator\html\help.ru.html</Russian></Key>
+<Key ID="STR/VDMJ/SQFConsole/DemoVoidFile">
+    <English>SQFCalculator\html\demo.en.html</English>
+    <Russian>SQFCalculator\html\demo.ru.html</Russian>
+    <Polish>SQFCalculator\html\demo.en.html</Polish>
+    <Czech>SQFCalculator\html\demo.en.html</Czech>
+    <SerboCroatian>SQFCalculator\html\demo.en.html</SerboCroatian>
+    <Slovak>SQFCalculator\html\demo.en.html</Slovak>
+    <German>SQFCalculator\html\demo.en.html</German>
+    <French>SQFCalculator\html\demo.en.html</French>
+    <Spanish>SQFCalculator\html\demo.en.html</Spanish>
+    <Italian>SQFCalculator\html\demo.en.html</Italian>
+</Key>
 
-<Key ID="STR:RLS:SQFConsole::Title"><English>Calculator</English><Russian>Калькулятор</Russian></Key>
-<Key ID="STR:RLS:SQFConsole::Exec"><English>Exec</English><Russian>Выполнить</Russian></Key>
-<Key ID="STR:RLS:SQFConsole::Formated"><English>Result</English><Russian>Результат</Russian></Key>
-<Key ID="STR:RLS:SQFConsole::Display"><English>Buffer</English><Russian>Буфер</Russian></Key>
-<Key ID="STR:RLS:SQFConsole::History"><English>History</English><Russian>Истор!я</Russian></Key>
-<Key ID="STR:RLS:SQFConsole::Processes"><English>Processes</English><Russian>Процессы</Russian></Key>
-<Key ID="STR:RLS:SQFConsole::Demo"><English>Demo</English><Russian>Демо</Russian></Key>
-<Key ID="STR:RLS:SQFConsole::Help"><English>Help</English><Russian>Справка</Russian></Key>
+<Key ID="STR/VDMJ/SQFConsole/HelpFile">
+    <English>SQFCalculator\html\help.en.html</English>
+    <Russian>SQFCalculator\html\help.ru.html</Russian>
+    <Polish>SQFCalculator\html\help.en.html</Polish>
+    <Czech>SQFCalculator\html\help.en.html</Czech>
+    <SerboCroatian>SQFCalculator\html\help.en.html</SerboCroatian>
+    <Slovak>SQFCalculator\html\help.en.html</Slovak>
+    <German>SQFCalculator\html\help.en.html</German>
+    <French>SQFCalculator\html\help.en.html</French>
+    <Spanish>SQFCalculator\html\help.en.html</Spanish>
+    <Italian>SQFCalculator\html\help.en.html</Italian>
+</Key>
 
-<Key ID="STR:RLS:SQFConsole::Watch"><English>Watch</English><Russian>Следить</Russian></Key>
-<Key ID="STR:RLS:SQFConsole::ConfigOutputMode:Full"><English>Full config</English><Russian>Полный конфиг</Russian></Key>
-<Key ID="STR:RLS:SQFConsole::ConfigOutputMode:AsIs"><English>As Is config</English><Russian>Стандартный конфиг</Russian></Key>
-<Key ID="STR:RLS:SQFConsole::ConfigOutputMode:Folded"><English>Folded config</English><Russian>Сворачивать конфиг</Russian></Key>
-<Key ID="STR:RLS:SQFConsole::ConfigOutputMode:ConfigOutputMode:toolTip"><English>Display config mode</English><Russian>Режим отображения конфига</Russian></Key>
+
+<Key ID="STR/VDMJ/SQFConsole/Title">
+    <English>Calculator</English>
+    <Russian>Калькулятор</Russian>
+    <Polish>Calculator</Polish>
+    <Czech>Calculator</Czech>
+    <SerboCroatian>Calculator</SerboCroatian>
+    <Slovak>Calculator</Slovak>
+    <German>Calculator</German>
+    <French>Calculator</French>
+    <Spanish>Calculator</Spanish>
+    <Italian>Calculator</Italian>
+</Key>
+
+<Key ID="STR/VDMJ/SQFConsole/Exec">
+    <English>Exec</English>
+    <Russian>Выполнить</Russian>
+    <Polish>Exec</Polish>
+    <Czech>Exec</Czech>
+    <SerboCroatian>Exec</SerboCroatian>
+    <Slovak>Exec</Slovak>
+    <German>Exec</German>
+    <French>Exec</French>
+    <Spanish>Exec</Spanish>
+    <Italian>Exec</Italian>
+</Key>
+
+<Key ID="STR/VDMJ/SQFConsole/Formated">
+    <English>Result</English>
+    <Russian>Результат</Russian>
+    <Polish>Result</Polish>
+    <Czech>Result</Czech>
+    <SerboCroatian>Result</SerboCroatian>
+    <Slovak>Result</Slovak>
+    <German>Result</German>
+    <French>Result</French>
+    <Spanish>Result</Spanish>
+    <Italian>Result</Italian>
+</Key>
+
+<Key ID="STR/VDMJ/SQFConsole/Display">
+    <English>Buffer</English>
+    <Russian>Буфер</Russian>
+    <Polish>Buffer</Polish>
+    <Czech>Buffer</Czech>
+    <SerboCroatian>Buffer</SerboCroatian>
+    <Slovak>Buffer</Slovak>
+    <German>Buffer</German>
+    <French>Buffer</French>
+    <Spanish>Buffer</Spanish>
+    <Italian>Buffer</Italian>
+</Key>
+
+<Key ID="STR/VDMJ/SQFConsole/History">
+    <English>History</English>
+    <Russian>Истор!я</Russian>
+    <Polish>History</Polish>
+    <Czech>History</Czech>
+    <SerboCroatian>History</SerboCroatian>
+    <Slovak>History</Slovak>
+    <German>History</German>
+    <French>History</French>
+    <Spanish>History</Spanish>
+    <Italian>History</Italian>
+</Key>
+
+<Key ID="STR/VDMJ/SQFConsole/Processes">
+    <English>Processes</English>
+    <Russian>Процессы</Russian>
+    <Polish>Processes</Polish>
+    <Czech>Processes</Czech>
+    <SerboCroatian>Processes</SerboCroatian>
+    <Slovak>Processes</Slovak>
+    <German>Processes</German>
+    <French>Processes</French>
+    <Spanish>Processes</Spanish>
+    <Italian>Processes</Italian>
+</Key>
+
+<Key ID="STR/VDMJ/SQFConsole/Demo">
+    <English>Demo</English>
+    <Russian>Демо</Russian>
+    <Polish>Demo</Polish>
+    <Czech>Demo</Czech>
+    <SerboCroatian>Demo</SerboCroatian>
+    <Slovak>Demo</Slovak>
+    <German>Demo</German>
+    <French>Demo</French>
+    <Spanish>Demo</Spanish>
+    <Italian>Demo</Italian>
+</Key>
+
+<Key ID="STR/VDMJ/SQFConsole/Help">
+    <English>Help</English>
+    <Russian>Справка</Russian>
+    <Polish>Help</Polish>
+    <Czech>Help</Czech>
+    <SerboCroatian>Help</SerboCroatian>
+    <Slovak>Help</Slovak>
+    <German>Help</German>
+    <French>Help</French>
+    <Spanish>Help</Spanish>
+    <Italian>Help</Italian>
+</Key>
+
+
+<Key ID="STR/VDMJ/SQFConsole/Watch">
+    <English>Watch</English>
+    <Russian>Следить</Russian>
+    <Polish>Watch</Polish>
+    <Czech>Watch</Czech>
+    <SerboCroatian>Watch</SerboCroatian>
+    <Slovak>Watch</Slovak>
+    <German>Watch</German>
+    <French>Watch</French>
+    <Spanish>Watch</Spanish>
+    <Italian>Watch</Italian>
+</Key>
+
+<Key ID="STR/VDMJ/SQFConsole/ConfigOutputMode.Full">
+    <English>Full config</English>
+    <Russian>Полный конфиг</Russian>
+    <Polish>Full config</Polish>
+    <Czech>Full config</Czech>
+    <SerboCroatian>Full config</SerboCroatian>
+    <Slovak>Full config</Slovak>
+    <German>Full config</German>
+    <French>Full config</French>
+    <Spanish>Full config</Spanish>
+    <Italian>Full config</Italian>
+</Key>
+
+<Key ID="STR/VDMJ/SQFConsole/ConfigOutputMode.AsIs">
+    <English>As Is config</English>
+    <Russian>Стандартный конфиг</Russian>
+    <Polish>As Is config</Polish>
+    <Czech>As Is config</Czech>
+    <SerboCroatian>As Is config</SerboCroatian>
+    <Slovak>As Is config</Slovak>
+    <German>As Is config</German>
+    <French>As Is config</French>
+    <Spanish>As Is config</Spanish>
+    <Italian>As Is config</Italian>
+</Key>
+
+<Key ID="STR/VDMJ/SQFConsole/ConfigOutputMode.Folded">
+    <English>Folded config</English>
+    <Russian>Сворачивать конфиг</Russian>
+    <Polish>Folded config</Polish>
+    <Czech>Folded config</Czech>
+    <SerboCroatian>Folded config</SerboCroatian>
+    <Slovak>Folded config</Slovak>
+    <German>Folded config</German>
+    <French>Folded config</French>
+    <Spanish>Folded config</Spanish>
+    <Italian>Folded config</Italian>
+</Key>
+
+<Key ID="STR/VDMJ/SQFConsole/ConfigOutputMode.ConfigOutputMode.toolTip">
+    <English>Display config mode</English>
+    <Russian>Режим отображения конфига</Russian>
+    <Polish>Display config mode</Polish>
+    <Czech>Display config mode</Czech>
+    <SerboCroatian>Display config mode</SerboCroatian>
+    <Slovak>Display config mode</Slovak>
+    <German>Display config mode</German>
+    <French>Display config mode</French>
+    <Spanish>Display config mode</Spanish>
+    <Italian>Display config mode</Italian>
+</Key>
+
+<Key ID="STR/VDMJ/SQFConsole/mod.cpp.name">
+    <English>Script console «Calculator»</English>
+    <Russian>Скрипт-консоль «Калькулятор»</Russian>
+    <Polish>Script console «Calculator»</Polish>
+    <Czech>Script console «Calculator»</Czech>
+    <SerboCroatian>Script console «Calculator»</SerboCroatian>
+    <Slovak>Script console «Calculator»</Slovak>
+    <German>Script console «Calculator»</German>
+    <French>Script console «Calculator»</French>
+    <Spanish>Script console «Calculator»</Spanish>
+    <Italian>Script console «Calculator»</Italian>
+</Key>
+
+<Key ID="STR/VDMJ/SQFConsole/mod.cpp.actionName">
+    <English>Website</English>
+    <Russian>Сайт проекта</Russian>
+    <Polish>Website</Polish>
+    <Czech>Website</Czech>
+    <SerboCroatian>Website</SerboCroatian>
+    <Slovak>Website</Slovak>
+    <German>Website</German>
+    <French>Website</French>
+    <Spanish>Website</Spanish>
+    <Italian>Website</Italian>
+</Key>
 
 </Package>
 </Project>

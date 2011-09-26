@@ -7,9 +7,11 @@
     h=__EVAL(H)
 
 
-#define localString(id) localize( "STR:RLS:SQFConsole::" + id )
-#define local(id) __EVAL( localString(id) )
-#define localFormat(str, id) __EVAL( format[str, localString(id)] )
+#define __STRINGTABLE_PREFIX STR/VDMJ/SQFConsole
+#define __Q(VALUE) #VALUE
+#define __L(VALUE) __Q(__STRINGTABLE_PREFIX/VALUE)
+#define L(VALUE) __EVAL(localize __L(VALUE))
+#define FORMAT_L(TPL,VALUE) __EVAL(format [TPL, localize __L(VALUE)])
 
 #define fontsize 0.034
 
@@ -182,7 +184,7 @@ class RscVdmjSqfCalculator {
                 align = "center";
                 shadow = 1;
             };
-            text = localFormat("<t size='1.3' align='center'>%1</t>", "Title");
+            text = FORMAT_L("<t size='1.3' align='center'>%1</t>",Title);
             moving = 1;
         };
     };
@@ -205,31 +207,31 @@ class RscVdmjSqfCalculator {
                     rows = 1;
                     columns = 6;
                     strings[] = {
-                        local("Formated"),
-                        local("Display"),
-                        local("History"),
-                        local("Processes"),
-                        local("Demo"),
-                        local("Help")
+                        L(Formated),
+                        L(Display),
+                        L(History),
+                        L(Processes),
+                        L(Demo),
+                        L(Help)
                     };
                 };
 
                 class ConfigOutputModeButton: RscRLSButton {
                     idc = 102;
                     RECT(.751, .82, .2, .05);
-                    text = local("ConfigOutputMode:AsIs");
+                    text = L(ConfigOutputMode.AsIs);
                     texts[] = {
-                        local("ConfigOutputMode:Full"),
-                        local("ConfigOutputMode:AsIs"),
-                        local("ConfigOutputMode:Folded")
+                        L(ConfigOutputMode.Full),
+                        L(ConfigOutputMode.AsIs),
+                        L(ConfigOutputMode.Folded)
                     };
-                    toolTip = local("ConfigOutputMode:ConfigOutputMode:toolTip");
+                    toolTip = L(ConfigOutputMode.ConfigOutputMode.toolTip);
                 };
 
                 class WatchButton: RscRLSButton {
                     idc = 103;
                     RECT(.65, .82, .09, .05);
-                    text = local("Watch");
+                    text = L(Watch);
                 };
 
                 class ResultFormated: RscRLSListBox {
@@ -262,7 +264,7 @@ class RscVdmjSqfCalculator {
                             idc = 1205;
                             RECT(0, 0, .96, .8);
                             colorBorder[] = {0, 0, 0, 1};
-                            filename = local("DemoVoidFile");
+                            filename = L(DemoVoidFile);
                             cycleLinks = 1;
                             cycleAllLinks = 1;
                         };
@@ -275,7 +277,7 @@ class RscVdmjSqfCalculator {
                         class Help: RscRLSHTML {
                             idc = 1206;
                             RECT(0, 0, .96, 2.4);
-                            filename = local("HelpFile");
+                            filename = L(HelpFile);
                             cycleLinks = 1;
                             cycleAllLinks = 1;
                         };

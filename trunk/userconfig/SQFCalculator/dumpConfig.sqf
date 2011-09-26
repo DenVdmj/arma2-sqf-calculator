@@ -86,10 +86,6 @@ Dump the entire config, it can take over ten seconds:
 ======================================================================================
 */
 
-//
-// #include "\rls\common";
-//
-
 #define arg(x)          (_this select (x))
 #define argIf(x)        if(count _this > (x))
 #define argIfType(x,t)  if(argIf(x)then{typeName arg(x) == (t)}else{false})
