@@ -675,4 +675,5 @@ _self = _this;
 
 } call _funcCreateDialog);
 
-nil;
+showCommandingMenu "";
+true;

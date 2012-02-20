@@ -64,6 +64,8 @@ class RscGroupRootMenu { setOnKeyDownEH };
 class RscDisplayMainMap { setOnKeyDownEH };
 class RscDisplayTemplateLoad { setOnKeyDownEH };
 class RscDisplayGear { setOnKeyDownEH };
+class RscDisplayDiary { setOnKeyDownEH };
+
 #include "dlg-defines.hpp"
 #include "dlg-calc.hpp"
 
