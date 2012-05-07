@@ -1,4 +1,4 @@
-﻿dir         = "SQFCalculator";
+﻿dir         = "sqf-calculator";
 name        = "Script console «Calculator»";
 picture     = "";   
 hidePicture = "true";

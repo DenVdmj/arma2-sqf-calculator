@@ -122,7 +122,7 @@ _myHistory = [
 #define argSafe(x) argIf(x)then{arg(x)}
 #define argSafeType(x,t) argIfType(x,t)then{arg(x)}
 #define argOr(x,v) (argSafe(x)else{v})
-#define push(a,v) (a)set[count(a),(v)]
+#define __push(a,v) (a)set[count(a),(v)]
 
 // Helpers
 SQFCALC_MapGrep = {
@@ -135,7 +135,7 @@ SQFCALC_MapGrep = {
     for "_1_" from 0 to count _C0NF_ -1 do {
         _x = _C0NF_ select _1_;
         _Fi1T3R_ call { private _SC0PE_; _x call _this } call {
-            push(_1iST_, _this);
+            __push(_1iST_, _this);
         };
     };
     _1iST_;

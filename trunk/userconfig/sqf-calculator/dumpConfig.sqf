@@ -92,9 +92,9 @@ Dump the entire config, it can take over ten seconds:
 #define argSafe(x)      argIf(x)then{arg(x)}
 #define argSafeType(x,t)  argIfType(x,t)then{arg(x)}
 #define argOr(x,v)      (argSafe(x)else{v})
-#define push(a,v)       (a)set[count(a),(v)]
-#define pushTo(a)       call{(a)set[count(a),_this]}
-#define log2(number)    ((log number)/.3010299956639812)
+#define __push(a,v)       (a)set[count(a),(v)]
+#define __pushTo(a)       call{(a)set[count(a),_this]}
+#define __log2(number)    ((log number)/.3010299956639812)
 
 private [
     "_joinString",
@@ -114,7 +114,7 @@ _joinString = {
 
     if (count _list < 1) exitwith {""};
 
-    for "" from 1 to ceil(log2(count _list)) do {
+    for "" from 1 to ceil(__log2(count _list)) do {
         _size = count _list / 2;
         _subsize = floor _size;
         _oversize = ceil _size;
@@ -141,9 +141,9 @@ _escapeString = {
         _target resize _start;
         for "_i" from _start to count _source - 1 do {
             _charCode = _source select _i;
-            push(_target, _charCode);
+            __push(_target, _charCode);
             if (_charCode == 34) then {
-                push(_target, _charCode);
+                __push(_target, _charCode);
             };
         };
         str toString _target;
@@ -165,8 +165,8 @@ _collectInheritedProperties = {
             _property = _config select _i;
             _propertyName = toLower configName _property;
             if !(_propertyName in _propertyNamesLC) then {
-                push(_properties, _property);
-                push(_propertyNamesLC, _propertyName);
+                __push(_properties, _property);
+                __push(_propertyNamesLC, _propertyName);
             };
         };
         configName _config != "";
@@ -191,7 +191,7 @@ _dumpConfigTree = {
         if (_depth >= count _indents) then {
             _indents set [_depth, (_indents select _depth-1) + "    "];
         };
-        push(_result, (_indents select _depth) + _this);
+        __push(_result, (_indents select _depth) + _this);
     };
 
     _traverse = {
@@ -229,7 +229,7 @@ _dumpConfigTree = {
             private "_array";
             _array = [];
             for "_i" from 0 to count _this - 1 do {
-                push(_array, _this select _i call _traverseArray);
+                __push(_array, _this select _i call _traverseArray);
             };
             "{" + ([_array, ", "] call _joinString) + "}";
         };

@@ -7,7 +7,7 @@
     h=__EVAL(H)
 
 
-#define __STRINGTABLE_PREFIX STR/VDMJ/SQFConsole
+#define __STRINGTABLE_PREFIX str/vdmj/sqf-calculator
 #define __Q(VALUE) #VALUE
 #define __L(VALUE) __Q(__STRINGTABLE_PREFIX/VALUE)
 #define L(VALUE) __EVAL(localize __L(VALUE))
@@ -170,13 +170,13 @@ class RscVdmjSqfCalculator {
 
     class controlsBackground {
         class Mainback : RscPicture {
-            idc = -1;
+            idc = 1;
             RECT(0, -.01, 1.28, 1.02);
             text = "\ca\ui\data\ui_background_controls_ca.paa";
             moving = 1;
         };
         class Title : RscStructuredText {
-            idc = -1;
+            idc = 2;
             RECT(0, .023, 1, .06);
             class Attributes {
                 font = "Zeppelin32";
@@ -184,7 +184,7 @@ class RscVdmjSqfCalculator {
                 align = "center";
                 shadow = 1;
             };
-            text = FORMAT_L("<t size='1.3' align='center'>%1</t>",Title);
+            text = FORMAT_L("<t size='1.3' align='center'>%1</t>",title);
             moving = 1;
         };
     };
@@ -207,31 +207,31 @@ class RscVdmjSqfCalculator {
                     rows = 1;
                     columns = 6;
                     strings[] = {
-                        L(Formated),
-                        L(Display),
-                        L(History),
-                        L(Processes),
-                        L(Demo),
-                        L(Help)
+                        L(formated),
+                        L(display),
+                        L(history),
+                        L(processes),
+                        L(demo),
+                        L(help)
                     };
                 };
 
                 class ConfigOutputModeButton: RscRLSButton {
                     idc = 102;
                     RECT(.751, .82, .2, .05);
-                    text = L(ConfigOutputMode.AsIs);
+                    text = L(config-output-mode.as-is);
                     texts[] = {
-                        L(ConfigOutputMode.Full),
-                        L(ConfigOutputMode.AsIs),
-                        L(ConfigOutputMode.Folded)
+                        L(config-output-mode.full),
+                        L(config-output-mode.as-is),
+                        L(config-output-mode.folded)
                     };
-                    toolTip = L(ConfigOutputMode.ConfigOutputMode.toolTip);
+                    toolTip = L(config-output-mode.tooltip);
                 };
 
                 class WatchButton: RscRLSButton {
                     idc = 103;
                     RECT(.65, .82, .09, .05);
-                    text = L(Watch);
+                    text = L(watch);
                 };
 
                 class ResultFormated: RscRLSListBox {
@@ -264,7 +264,7 @@ class RscVdmjSqfCalculator {
                             idc = 1205;
                             RECT(0, 0, .96, .8);
                             colorBorder[] = {0, 0, 0, 1};
-                            filename = L(DemoVoidFile);
+                            filename = L(demo-void-file);
                             cycleLinks = 1;
                             cycleAllLinks = 1;
                         };
@@ -277,7 +277,7 @@ class RscVdmjSqfCalculator {
                         class Help: RscRLSHTML {
                             idc = 1206;
                             RECT(0, 0, .96, 2.4);
-                            filename = L(HelpFile);
+                            filename = L(help-file);
                             cycleLinks = 1;
                             cycleAllLinks = 1;
                         };
@@ -296,7 +296,7 @@ class RscTitles {
         fadein       =  0;
         fadeout      =  0;
         name = ;
-        onLoad = "_this call compile preprocessFile '\SQFCalculator\overlay.sqf'";
+        onLoad = "_this call compile preprocessFile '\sqf-calculator\overlay.sqf'";
         class controlsBackground {};
         class objects {};
         class controls {

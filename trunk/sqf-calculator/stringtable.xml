@@ -2,34 +2,34 @@
 <Project name="RLS">
 <Package name="SQFConsole">
 
-<Key ID="STR/VDMJ/SQFConsole/DemoVoidFile">
-    <English>SQFCalculator\html\demo.en.html</English>
-    <Russian>SQFCalculator\html\demo.ru.html</Russian>
-    <Polish>SQFCalculator\html\demo.en.html</Polish>
-    <Czech>SQFCalculator\html\demo.en.html</Czech>
-    <SerboCroatian>SQFCalculator\html\demo.en.html</SerboCroatian>
-    <Slovak>SQFCalculator\html\demo.en.html</Slovak>
-    <German>SQFCalculator\html\demo.en.html</German>
-    <French>SQFCalculator\html\demo.en.html</French>
-    <Spanish>SQFCalculator\html\demo.en.html</Spanish>
-    <Italian>SQFCalculator\html\demo.en.html</Italian>
+<Key ID="str/vdmj/sqf-calculator/demo-void-file">
+    <English>sqf-calculator\html\demo.en.html</English>
+    <Russian>sqf-calculator\html\demo.ru.html</Russian>
+    <Polish>sqf-calculator\html\demo.en.html</Polish>
+    <Czech>sqf-calculator\html\demo.en.html</Czech>
+    <SerboCroatian>sqf-calculator\html\demo.en.html</SerboCroatian>
+    <Slovak>sqf-calculator\html\demo.en.html</Slovak>
+    <German>sqf-calculator\html\demo.en.html</German>
+    <French>sqf-calculator\html\demo.en.html</French>
+    <Spanish>sqf-calculator\html\demo.en.html</Spanish>
+    <Italian>sqf-calculator\html\demo.en.html</Italian>
 </Key>
 
-<Key ID="STR/VDMJ/SQFConsole/HelpFile">
-    <English>SQFCalculator\html\help.en.html</English>
-    <Russian>SQFCalculator\html\help.ru.html</Russian>
-    <Polish>SQFCalculator\html\help.en.html</Polish>
-    <Czech>SQFCalculator\html\help.en.html</Czech>
-    <SerboCroatian>SQFCalculator\html\help.en.html</SerboCroatian>
-    <Slovak>SQFCalculator\html\help.en.html</Slovak>
-    <German>SQFCalculator\html\help.en.html</German>
-    <French>SQFCalculator\html\help.en.html</French>
-    <Spanish>SQFCalculator\html\help.en.html</Spanish>
-    <Italian>SQFCalculator\html\help.en.html</Italian>
+<Key ID="str/vdmj/sqf-calculator/help-file">
+    <English>sqf-calculator\html\help.en.html</English>
+    <Russian>sqf-calculator\html\help.ru.html</Russian>
+    <Polish>sqf-calculator\html\help.en.html</Polish>
+    <Czech>sqf-calculator\html\help.en.html</Czech>
+    <SerboCroatian>sqf-calculator\html\help.en.html</SerboCroatian>
+    <Slovak>sqf-calculator\html\help.en.html</Slovak>
+    <German>sqf-calculator\html\help.en.html</German>
+    <French>sqf-calculator\html\help.en.html</French>
+    <Spanish>sqf-calculator\html\help.en.html</Spanish>
+    <Italian>sqf-calculator\html\help.en.html</Italian>
 </Key>
 
 
-<Key ID="STR/VDMJ/SQFConsole/Title">
+<Key ID="str/vdmj/sqf-calculator/title">
     <English>Calculator</English>
     <Russian>Калькулятор</Russian>
     <Polish>Calculator</Polish>
@@ -42,7 +42,7 @@
     <Italian>Calculator</Italian>
 </Key>
 
-<Key ID="STR/VDMJ/SQFConsole/Exec">
+<Key ID="str/vdmj/sqf-calculator/exec">
     <English>Exec</English>
     <Russian>Выполнить</Russian>
     <Polish>Exec</Polish>
@@ -55,7 +55,7 @@
     <Italian>Exec</Italian>
 </Key>
 
-<Key ID="STR/VDMJ/SQFConsole/Formated">
+<Key ID="str/vdmj/sqf-calculator/formated">
     <English>Result</English>
     <Russian>Результат</Russian>
     <Polish>Result</Polish>
@@ -68,7 +68,7 @@
     <Italian>Result</Italian>
 </Key>
 
-<Key ID="STR/VDMJ/SQFConsole/Display">
+<Key ID="str/vdmj/sqf-calculator/display">
     <English>Buffer</English>
     <Russian>Буфер</Russian>
     <Polish>Buffer</Polish>
@@ -81,7 +81,7 @@
     <Italian>Buffer</Italian>
 </Key>
 
-<Key ID="STR/VDMJ/SQFConsole/History">
+<Key ID="str/vdmj/sqf-calculator/history">
     <English>History</English>
     <Russian>Истор!я</Russian>
     <Polish>History</Polish>
@@ -94,7 +94,7 @@
     <Italian>History</Italian>
 </Key>
 
-<Key ID="STR/VDMJ/SQFConsole/Processes">
+<Key ID="str/vdmj/sqf-calculator/processes">
     <English>Processes</English>
     <Russian>Процессы</Russian>
     <Polish>Processes</Polish>
@@ -107,7 +107,7 @@
     <Italian>Processes</Italian>
 </Key>
 
-<Key ID="STR/VDMJ/SQFConsole/Demo">
+<Key ID="str/vdmj/sqf-calculator/demo">
     <English>Demo</English>
     <Russian>Демо</Russian>
     <Polish>Demo</Polish>
@@ -120,7 +120,7 @@
     <Italian>Demo</Italian>
 </Key>
 
-<Key ID="STR/VDMJ/SQFConsole/Help">
+<Key ID="str/vdmj/sqf-calculator/help">
     <English>Help</English>
     <Russian>Справка</Russian>
     <Polish>Help</Polish>
@@ -134,7 +134,7 @@
 </Key>
 
 
-<Key ID="STR/VDMJ/SQFConsole/Watch">
+<Key ID="str/vdmj/sqf-calculator/watch">
     <English>Watch</English>
     <Russian>Следить</Russian>
     <Polish>Watch</Polish>
@@ -147,7 +147,7 @@
     <Italian>Watch</Italian>
 </Key>
 
-<Key ID="STR/VDMJ/SQFConsole/ConfigOutputMode.Full">
+<Key ID="str/vdmj/sqf-calculator/config-output-mode.full">
     <English>Full config</English>
     <Russian>Полный конфиг</Russian>
     <Polish>Full config</Polish>
@@ -160,7 +160,7 @@
     <Italian>Full config</Italian>
 </Key>
 
-<Key ID="STR/VDMJ/SQFConsole/ConfigOutputMode.AsIs">
+<Key ID="str/vdmj/sqf-calculator/config-output-mode.as-is">
     <English>As Is config</English>
     <Russian>Стандартный конфиг</Russian>
     <Polish>As Is config</Polish>
@@ -173,7 +173,7 @@
     <Italian>As Is config</Italian>
 </Key>
 
-<Key ID="STR/VDMJ/SQFConsole/ConfigOutputMode.Folded">
+<Key ID="str/vdmj/sqf-calculator/config-output-mode.folded">
     <English>Folded config</English>
     <Russian>Сворачивать конфиг</Russian>
     <Polish>Folded config</Polish>
@@ -186,7 +186,7 @@
     <Italian>Folded config</Italian>
 </Key>
 
-<Key ID="STR/VDMJ/SQFConsole/ConfigOutputMode.ConfigOutputMode.toolTip">
+<Key ID="str/vdmj/sqf-calculator/config-output-mode.tooltip">
     <English>Display config mode</English>
     <Russian>Режим отображения конфига</Russian>
     <Polish>Display config mode</Polish>
@@ -199,7 +199,7 @@
     <Italian>Display config mode</Italian>
 </Key>
 
-<Key ID="STR/VDMJ/SQFConsole/mod.cpp.name">
+<Key ID="str/vdmj/sqf-calculator/mod.cpp.name">
     <English>Script console «Calculator»</English>
     <Russian>Скрипт-консоль «Калькулятор»</Russian>
     <Polish>Script console «Calculator»</Polish>
@@ -212,7 +212,7 @@
     <Italian>Script console «Calculator»</Italian>
 </Key>
 
-<Key ID="STR/VDMJ/SQFConsole/mod.cpp.actionName">
+<Key id="str/vdmj/sqf-calculator/mod.cpp.action-name">
     <English>Website</English>
     <Russian>Сайт проекта</Russian>
     <Polish>Website</Polish>

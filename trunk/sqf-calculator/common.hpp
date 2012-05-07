@@ -36,11 +36,11 @@
 
 #define item(a,v)  ((a)select(((v)min(count(a)-1))max 0))
 #define itemr(a,v) (item((a),if((v)<0)then{count(a)+(v)}else{v}))
-#define push(a,v)  (a)set[count(a),(v)]
-#define pushTo(a)  call{(a)set[count(a),_this]}
-#define top(a)     ((a)select((count(a)-1)max 0))
-#define pop(a)     (0 call{_this=top(a);a resize((count(a)-1)max 0);_this})
-#define selectRnd(a) (a select floor random count a)
+#define __push(a,v)  (a)set[count(a),(v)]
+#define __pushTo(a)  call{(a)set[count(a),_this]}
+#define __top(a)     ((a)select((count(a)-1)max 0))
+#define __pop(a)     (0 call{_this=__top(a);a resize((count(a)-1)max 0);_this})
+#define __selectRnd(a) (a select floor random count a)
 
 //
 // Position macro
@@ -56,24 +56,24 @@
 // Other macro
 //
 
-#define logN(power,number) ((log number)/(log power))
-#define log2(number) ((log number)/.3010299956639812)
+#define __logN(power,number) ((log number)/(log power))
+#define __log2(number) ((log number)/.3010299956639812)
 #define getBit(num,bit) (floor((num / (2^bit)) % 2))
 #define checkBit(num,bit) (getBit(num,bit) == 1)
-#define xor(a,b) (!(a && b) && (a || b))
-#define inc(n) (call { n = n + 1; n })
-#define dec(n) (call { n = n - 1; n })
+#define __xor(a,b) (!(a && b) && (a || b))
+#define __inc(n) (call { n = n + 1; n })
+#define __dec(n) (call { n = n - 1; n })
 #define _(v)   _##v = _##v
 
 //
 // for, map, grep
 //
 
-#define forConf(list) call { private ["_x", "___n"]; ___n = list; for "_i" from 0 to count ___n -1 do { _x = ___n select _i; private "___n"; _x call _this; }; }
-#define mapArray(list) call { private "___r"; ___r = []; { ___r set [count ___r, call { private "___r"; _x call _this }] } foreach (list); ___r; }
-#define grepArray(list) call { private "___r"; ___r = []; { if( call { private "___r"; _x call _this } ) then { push(___r, _x) } } foreach (list); ___r; }
-#define map(list) call { private ["___r", "___n", "_x"]; ___r = []; ___n = list; for "_i" from 0 to count ___n -1 do { _x = ___n select _i; ___r set [count ___r, call { private ["___r", "___n"]; call _this }] }; ___r; }
-#define grep(list) call { private ["___r", "___n", "_x"]; ___r = []; ___n = list; for "_i" from 0 to count ___n -1 do { _x = ___n select _i; if( call { private ["___r", "___n"]; _x call _this } ) then { push(___r, _x) } }; ___r; }
+#define __forConf(list) call { private ["_x", "___n"]; ___n = list; for "_i" from 0 to count ___n -1 do { _x = ___n select _i; private "___n"; _x call _this; }; }
+#define __mapArray(list) call { private "___r"; ___r = []; { ___r set [count ___r, call { private "___r"; _x call _this }] } foreach (list); ___r; }
+#define __grepArray(list) call { private "___r"; ___r = []; { if( call { private "___r"; _x call _this } ) then { __push(___r, _x) } } foreach (list); ___r; }
+#define __map(list) call { private ["___r", "___n", "_x"]; ___r = []; ___n = list; for "_i" from 0 to count ___n -1 do { _x = ___n select _i; ___r set [count ___r, call { private ["___r", "___n"]; call _this }] }; ___r; }
+#define __grep(list) call { private ["___r", "___n", "_x"]; ___r = []; ___n = list; for "_i" from 0 to count ___n -1 do { _x = ___n select _i; if( call { private ["___r", "___n"]; _x call _this } ) then { __push(___r, _x) } }; ___r; }
 
 //
 // Type of expression

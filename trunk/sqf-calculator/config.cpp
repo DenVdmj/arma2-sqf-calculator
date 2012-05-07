@@ -1,7 +1,7 @@
 // ARMA2
 
 class CfgPatches {
-    class SQFCalculator {
+    class SqfCalculator {
         units[] = {};
         weapons[] = {};
         requiredVersion = 0.1;
@@ -11,12 +11,12 @@ class CfgPatches {
 
 class CfgMods {
     class RLS {
-        dir = "@\SQFCalculator";
+        dir = "@\sqf-calculator";
         name = "SQF-Calculator";
         picture = "";
         hidePicture = "true";
         hideName = "true";
-        actionName = "Website";
+        actionName = "$str/vdmj/sqf-calculator/mod.cpp.action-name";
         action = "http://code.google.com/p/arma2-sqf-calculator/";
     };
 };
@@ -43,10 +43,10 @@ class RscStructuredText;
 //class RscStandardDisplay;
 class RscDisplayEmpty;
 
-__EXEC( call compile preprocessFileLineNumbers '\SQFCalculator\getSettingsToParsingNamespace.sqf' );
+__EXEC( call compile preprocessFileLineNumbers '\sqf-calculator\getSettingsToParsingNamespace.sqf' );
 
-#define setOnKeyDownEH_ onKeyDown = "if((_this select 1)==(parsingNamespace getVariable '/SQFCalculator/HKOpenConsole'))then{if(isNil{missionNamespace getVariable'\SQFCalculator\calc.sqf'})then{missionNamespace setVariable['\SQFCalculator\calc.sqf',compile preprocessFileLineNumbers'\SQFCalculator\calc.sqf']};(_this select 0)call(missionNamespace getVariable'\SQFCalculator\calc.sqf')}else{_this execVM'\ca\ui\scripts\mainmenuShortcuts.sqf'};nil";
-#define setOnKeyDownEH onKeyDown = "if((_this select 1)==(parsingNamespace getVariable '/SQFCalculator/HKOpenConsole'))then{if(isNil{missionNamespace getVariable'\SQFCalculator\calc.sqf'})then{missionNamespace setVariable['\SQFCalculator\calc.sqf',compile preprocessFileLineNumbers'\SQFCalculator\calc.sqf']};(_this select 0)call(missionNamespace getVariable'\SQFCalculator\calc.sqf')};nil";
+#define setOnKeyDownEH_ onKeyDown = "if((_this select 1)==(parsingNamespace getVariable '/sqf-calculator/HKOpenConsole'))then{if(isNil{missionNamespace getVariable'\sqf-calculator\calc.sqf'})then{missionNamespace setVariable['\sqf-calculator\calc.sqf',compile preprocessFileLineNumbers'\sqf-calculator\calc.sqf']};(_this select 0)call(missionNamespace getVariable'\sqf-calculator\calc.sqf')}else{_this execVM'\ca\ui\scripts\mainmenuShortcuts.sqf'};nil";
+#define setOnKeyDownEH onKeyDown = "if((_this select 1)==(parsingNamespace getVariable '/sqf-calculator/HKOpenConsole'))then{if(isNil{missionNamespace getVariable'\sqf-calculator\calc.sqf'})then{missionNamespace setVariable['\sqf-calculator\calc.sqf',compile preprocessFileLineNumbers'\sqf-calculator\calc.sqf']};(_this select 0)call(missionNamespace getVariable'\sqf-calculator\calc.sqf')};nil";
 
 class RscStandardDisplay { setOnKeyDownEH };
 class RscDisplayMain : RscStandardDisplay { setOnKeyDownEH_ };
