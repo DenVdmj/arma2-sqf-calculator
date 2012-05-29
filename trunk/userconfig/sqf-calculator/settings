@@ -8,21 +8,15 @@
 //
 
 _myHistory = [
-    {
-        "Show all weapons, magazines and pathes that uses turrets of vehicle under cursor";
-        cursorTarget call SQFCALC_GetTurretsWeapons
-    },
-    // Press Insert and before Ctrl+Enter, or click button Watch
-    {
-        "Watcher CursorTarget";
-        call SQFCALC_CursorTargetWatcher
-    },
-    {
-        "Config of cursor target";
-        configFile >> "CfgVehicles" >> typeof cursorTarget
-    },
-    {
-        "Show all game weapons";
+    
+    //{"ArmA2Lua" callExtension "qwe"},
+
+    {"Show all weapons, magazines and pathes that uses turrets of vehicle under cursor"; cursorTarget call SQFCALC_GetTurretsWeapons},
+    
+    // PRESS INSERT AND BEFORE CTRL+ENTER, OR CLICK BUTTON "WATCH"
+    {"Watcher CursorTarget"; call SQFCALC_CursorTargetWatcher},
+    {"Config of cursor target"; configFile >> "CfgVehicles" >> typeof cursorTarget},
+    {"Show all game weapons";         
         [configFile >> "CfgWeapons", {
             if (isClass _x) then {
                 if (getNumber (_x >> "scope") > 0) then {
@@ -31,8 +25,7 @@ _myHistory = [
             }
         }] call SQFCALC_MapGrep
     },
-    {
-        "Show all game cars";
+    {"Show all game cars";
         [configFile >> "CfgVehicles", {
             if (isClass _x) then {
                 if (getNumber (_x >> "scope") > 0 &&
@@ -43,8 +36,7 @@ _myHistory = [
             }
         }] call SQFCALC_MapGrep
     },
-    {
-        "Show all modules";
+    {"Show all modules";
         [configFile >> "CfgVehicles", {
             if (isClass _x) then {
                 if (getNumber (_x >> "scope") > 0 &&
@@ -55,66 +47,40 @@ _myHistory = [
             }
         }] call SQFCALC_MapGrep
     },
-    {
-        "Show animation sources of vehicle player";
-        configFile >> "cfgVehicles" >> typeof vehicle player >> "AnimationSources"
+    {"Show animation sources of vehicle player"; configFile >> "cfgVehicles" >> typeof vehicle player >> "AnimationSources"},
+    {"Show animation sources of cursorTarget"; configFile >> "cfgVehicles" >> typeof cursorTarget >> "AnimationSources"},
+    {"Show nearest objects"; 
+        _list = []; 
+        {
+            _list set [count _list, [str _x, if (isClass(configFile >> "CfgVehicles" >> typeof _x)) then {
+                getText(configFile >> "CfgVehicles" >> typeof _x >> "model") 
+            } else {
+                str _x call SQFCALC_GetModelName 
+            }, typeof _x]] 
+        } foreach nearestObjects [player, [], 20];
+        _list
     },
-    {
-        "Show animation sources of cursorTarget";
-        configFile >> "cfgVehicles" >> typeof cursorTarget >> "AnimationSources"
-    },
-    {
-        "Show nearest objects";
-        _c = []; { _c set [count _c, [str _x, if (isClass(configFile >> "CfgVehicles" >> typeof _x)) then { getText(configFile >> "CfgVehicles" >> typeof _x >> "model") } else { str _x call SQFCALC_GetModelName }, typeof _x]] } foreach nearestObjects [player, [], 20]; _c
-    },
-    {
-        "Show crew roles";
-        cursorTarget call SQFCALC_GetCrewRoles
-    },
-    {
-        "Show primary weapon player config";
-        configFile >> "CfgWeapons" >> primaryWeapon player
-    },
-    {
-        "Show secondary weapon player config";
-        configFile >> "CfgWeapons" >> secondaryWeapon player
-    },
-    {
-        "Find all current display";
-        [1000, 1000] call SQFCALC_FindAllDisplay
-    },
-    {
-        "Add teleport player group";
-        onMapSingleClick {{ _x setpos _pos } foreach units player; true}
-    },
-    {
-        "env1" call compile preprocessFileLineNumbers "\userconfig\SQFCalculator\envs\set.sqf"
-    },
-    {
-        [configFile >> "CfgVehicles"] call compile preprocessFileLineNumbers "\userconfig\SQFCalculator\dumpConfig.sqf"
-    },
-    // Snippets
-    {
-        "Ikarus" call SQFCALC_findClassInConfig
-    },
-    {
-        cursorTarget setObjectTexture [0, "tex\"]
-    },
-    {
-        _car = "" createVehicleLocal (screenToWorld [.5,.5]);
-        _car setObjectTexture [0, ""];
-        player reveal _car
-    },
-    {
-        configFile >> "cfgVehicles" >> typeof cursorTarget >> "HitPoints"
-    },
-    {
-        cursorTarget setHit [getText (configFile >> "cfgVehicles" >> typeof cursorTarget >> "HitPoints" >> "HitVRotor" >> "name"), 1]
-    },
-    {
-        call compile preprocessFileLineNumbers ""
-    }
+    {"Show crew roles"; cursorTarget call SQFCALC_GetCrewRoles},
+    {"Show primary weapon player config"; configFile >> "CfgWeapons" >> primaryWeapon player},
+    {"Show secondary weapon player config"; configFile >> "CfgWeapons" >> secondaryWeapon player},
+    {"Find all current display"; [1000, 1000] call SQFCALC_FindAllDisplay},
+    {"Add teleport player group"; onMapSingleClick {{ _x setpos _pos } foreach units player; true}},
+    {"env1" call compile preprocessFileLineNumbers "\userconfig\SQFCalculator\envs\set.sqf"},
+    {[configFile >> "CfgVehicles"] call compile preprocessFileLineNumbers "\userconfig\SQFCalculator\dumpConfig.sqf"},
+    
+    // SNIPPETS
+
+    {"" call SQFCALC_findClassInConfig},
+    {cursorTarget setObjectTexture [0, "tex\"]},
+    {_obj = "" createVehicleLocal (screenToWorld [.5,.5]); _obj setObjectTexture [0, ""]; player reveal _obj},
+    {configFile >> "cfgVehicles" >> typeof cursorTarget >> "HitPoints"},
+    {cursorTarget setHit [getText (configFile >> "cfgVehicles" >> typeof cursorTarget >> "HitPoints" >> "HitVRotor" >> "name"), 1]},
+    {[cfg >> ""] call compile preprocessFileLineNumbers "userconfig\sqf-calculator\dumpConfig.sqf"},
+    {call compile preprocessFileLineNumbers ""},
+    {findDisplay 46 displayCtrl 1000 ctrlShow false}
 ];
+
+
 
 #define arg(x) (_this select (x))
 #define argIf(x) if(count _this > (x))
@@ -167,7 +133,7 @@ SQFCALC_CursorTargetWatcher = {
         _conf = configFile >> "CfgVehicles" >> _type;
         SQFCALC_TargetCursorConf = _conf;
         format [
-            "%1<br />class %2 : %3<br />%4<br />%5<br />%6",
+            "%1<br />class %2 : %3<br />%4<br />%5<br />%6<br />%7",
             getText(_conf >> "displayName"),
             _type,
             configName inheritsFrom _conf,
@@ -177,7 +143,8 @@ SQFCALC_CursorTargetWatcher = {
             } else {
                 getText(_conf >> "Library" >> "libTextDesc")
             },
-            cursorTarget
+            cursorTarget,
+            side cursorTarget
         ];
     } else {
         "void";
@@ -189,8 +156,9 @@ SQFCALC_GetCrewRoles = {
     _list = [];
     {
         _list set [count _list, [
+            name _x,
             rank _x,
-            "Assign as " + (vehicle _x call {
+            "Assigned as " + (vehicle _x call {
                 if (_x == assignedCommander _this) exitwith { "Commander" };
                 if (_x == assignedDriver _this) exitwith { "Driver" };
                 if (_x == assignedGunner _this) exitwith { "Gunner" };
@@ -327,12 +295,22 @@ SQFCALC_GetTurretPath = {
 
 SQFCALC_GetModelName = {
     _this = toArray _this;
-    for "_i" from 0 to count _this - 1 do {
-        if (_this select _i == 32) exitwith {
-            _this set [_i, 62];
-            str parseText ("< " + toString _this);
-        };
-    };
+    _i = _this find 32;
+    if (_i < 0) exitwith { "" };
+    _this set [_i, 62];
+    str parseText ("< " + toString _this);
+};
+
+// ["wall_indfnc_3.p3d", getpos player, 4] call SQFCALC_GetNearObjectByModelName
+
+SQFCALC_GetNearObjectByModelName = {
+    private ["_modelname", "_position", "_radius"];
+    _modelname = arg(0);
+    _position = arg(1);
+    _radius = arg(2);
+    [nearestObjects [_position, [], _radius], { 
+        if ((toLower (str _x call SQFCALC_GetModelName)) in _modelname) then { _x };
+    }] call SQFCALC_MapGrep;
 };
 
 SQFCALC_FindAllDisplay = {
@@ -348,7 +326,8 @@ SQFCALC_FindAllDisplay = {
             for "_i" from 0 to _m do {
                 _ctrl = _display displayCtrl _i;
                 if (! isNull _ctrl) then {
-                    _ctrlList set [count _ctrlList, _ctrl];
+                    _ctrlList set [count _ctrlList,
+                    str _ctrl + ([", not shown", ", shown"] select ctrlShown _ctrl) + ", " + str ctrlType _ctrl];
                 };
             };
         };
@@ -369,17 +348,19 @@ SQFCALC_RC = {
 //
 // The maximum time allowed for execution of the expression
 // For example, the total time for output full game config may be 20 seconds and more.
-// At the latest patches Armagh, well, sooo much time: ((
+// At the latest patches ArmA2, well, sooo much time: ((
 //
 
-_maxTimeout = 120;
+_maxTimeout = 40; //120;
 
 //
 // Codes keyboard shortcuts, with clamped alt
 //
 // 
 //_HKOpenConsole = 0x3B; // F1 key
-//_HKOpenConsole = 0x29; // tilda key 
+//_HKOpenConsole = 0x3C; // F2 key
+//_HKOpenConsole = 0x29; // tilda key
+_HKOpenConsole = 0x52;   // grey 0
 //_HKInput = 2;
 //_HKDisplay = 3;
 //_HKDisplay2 = 4;
@@ -402,3 +383,6 @@ cfgw = configFile >> "CfgWeapons";
 cfgv = configFile >> "CfgVehicles";
 mcfg = missionConfigFile;
 ccfg = campaignConfigFile;
+
+// showCommandingMenu "";
+

@@ -2,18 +2,18 @@
 @setlocal enabledelayedexpansion
 
 rem ----------------------------------------------------------------------------------------------
-rem   Relative path to mod folder
+rem   Relative (by Arma2 folder) path to mod folder
 set   RelativeModDir=@\$vdmj\sqf-calculator
+rem   Addons directories list, may be a mask, as %~dp0*
+set   DirList="%~dp0sqf-calculator"
 rem   Requires binarize
 set   Binarize=off
 rem   Requires signing
 set   Sign=on
-rem   Current path
-set   ThisPath=%~dp0
-rem   Directories of addons
-set   DirList="%~dp0sqf-calculator"
 rem   Mask of added files
 set   Mask=*
+rem   Current path
+set   ThisPath=%~dp0
 rem ----------------------------------------------------------------------------------------------
 
 rem Read install path of BinPBO.exe programm
@@ -29,19 +29,24 @@ if not exist %TargetAddonDir% (
     mkdir "%TargetAddonDir%"
 )
 
-copy "mod.cpp" "%TargetAddonDir%/../mod.cpp"
+if exist "mod.cpp" (
+    copy "mod.cpp" "%TargetAddonDir%/../mod.cpp"
+)
 
 call :MakePboProcess "%DirList%"
-call "make-distrib.bat"
+
+if exist "make-distrib.bat" (
+    call "make-distrib.bat"
+)
 
 goto :eof
 
 rem ==============================================================================================
 
-
 :MakePboProcess
     
-    call :CreateTempFile "*" "mask"
+    call :CreateTempFile "%Mask%" "mask"
+    call :CreateTempDir "temp_binarize_pbos" "%temp%"
 
     echo --------------------------------
     echo -- START CREATE PBO
@@ -49,16 +54,17 @@ rem ============================================================================
 
     for /D %%i in (%~1) do (
         if exist "%TargetAddonDir%\%%~ni.pbo" (
-            del "%TargetAddonDir%\%%~ni.pbo"
+            del "%TargetAddonDir%\%%~ni.*"
         )
         if "%Binarize%"=="on" (
-            "%BinPBOPath%\BinPBO.exe" "%%~i" "%TargetAddonDir%" -BINARIZE -TEMP "%temp%" -INCLUDE "%Mask%"
+            "%BinPBOPath%\BinPBO.exe" "%%~i" "%TargetAddonDir%" -BINARIZE -TEMP "%temp_binarize_pbos%" -INCLUDE "%Mask%"
         ) else (
             "%BinPBOPath%\BinPBO.exe" "%%~i" "%TargetAddonDir%" -INCLUDE "%Mask%"
         )
     )
 
     del "%Mask%"
+    rmdir /s /q "%temp_binarize_pbos%"
 
     echo --------------------------------
     echo -- START SIGN PBO
@@ -82,7 +88,6 @@ rem ============================================================================
 
 goto :eof
 
-
 :RegRead
     for /F "tokens=1,2,*" %%i in ('reg query "%~2" /v "%~3"') do (
         if "%%i"=="%~3" (
@@ -90,7 +95,6 @@ goto :eof
         )
     )
 goto :eof
-
 
 :CanonizePath
     for %%i in ("%~2\some") do (
@@ -100,14 +104,19 @@ goto :eof
     )
 goto :eof
 
-
 :CreateTempFile
     for /f "tokens=1,2,3,4,5,6,7 delims=:,. " %%i in ("%DATE%:%TIME%") do (
         set %~2=___%~2___%%i%%j%%k%%l%%m%%n_%%o___
+        echo %~1>___%~2___%%i%%j%%k%%l%%m%%n_%%o___
     )
-    echo %~1>%Mask%
 goto :eof
 
+:CreateTempDir
+    for /f "tokens=1,2,3,4,5,6,7 delims=:,. " %%i in ("%DATE%:%TIME%") do (
+        set %~1=%~2/___%~1___%%i%%j%%k%%l%%m%%n_%%o___
+        mkdir "%~2/___%~1___%%i%%j%%k%%l%%m%%n_%%o___"
+    )
+goto :eof
 
 :ReadBiPrivateKey
     if exist "%~1" (
@@ -122,5 +131,3 @@ goto :eof
         pause
     )
 goto :eof
-
-
