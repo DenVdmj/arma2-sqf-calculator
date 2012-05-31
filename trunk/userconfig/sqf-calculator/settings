@@ -1,7 +1,45 @@
 ﻿// sqf
 //
-// Sqf-calculator settings file
+// SQF-Calculator settings file
 //
+
+//
+// The maximum time allowed for execution of the expression
+// For example, the total time for output full game config may be 20 seconds and more.
+// At the latest patches ArmA2, well, sooo much time: ((
+//
+
+_maxTimeout = 20; //120;
+
+//
+// Codes keyboard shortcuts, with clamped alt
+//
+
+//  _HKOpenConsole = 0x3B; // F1 key
+//  _HKOpenConsole = 0x3C; // F2 key
+//  _HKOpenConsole = 0x29; // tilda key
+//  _HKOpenConsole = 0x52; // grey 0
+//  _HKInput = 2;
+//  _HKDisplay = 3;
+//  _HKDisplay2 = 4;
+//  _HKHistory = 0x23;
+//  _HKProcesses = 0x24
+//  _HKDemo = 0x20;
+//  _HKHelp = 0x3B;
+//  _HKLeft =
+//  _HKRight =
+
+//
+// Casual shortcut
+//
+
+cfg  = configFile;
+cfga = configFile >> "CfgAmmo";
+cfgm = configFile >> "CfgMagazines";
+cfgw = configFile >> "CfgWeapons";
+cfgv = configFile >> "CfgVehicles";
+mcfg = missionConfigFile;
+ccfg = campaignConfigFile;
 
 //
 // Additional history lines, any usefull code strings
@@ -9,11 +47,10 @@
 
 _myHistory = [
     
-    //{"ArmA2Lua" callExtension "qwe"},
-
     {"Show all weapons, magazines and pathes that uses turrets of vehicle under cursor"; cursorTarget call SQFCALC_GetTurretsWeapons},
+    {"Show all weapons, magazines and pathes that uses turrets of vehicle class"; "RHIB2Turret" call SQFCALC_GetTurretsWeapons},
     
-    // PRESS INSERT AND BEFORE CTRL+ENTER, OR CLICK BUTTON "WATCH"
+    // PRESS INSERT AND BEFORE CTRL+ENTER, OR CLICK BUTTON WATCH
     {"Watcher CursorTarget"; call SQFCALC_CursorTargetWatcher},
     {"Config of cursor target"; configFile >> "CfgVehicles" >> typeof cursorTarget},
     {"Show all game weapons";         
@@ -47,6 +84,7 @@ _myHistory = [
             }
         }] call SQFCALC_MapGrep
     },
+    {"Show all fonts"; [configFile >> "CfgFontFamilies", {if (isClass _x) then { configName _x }}] call SQFCALC_MapGrep},
     {"Show animation sources of vehicle player"; configFile >> "cfgVehicles" >> typeof vehicle player >> "AnimationSources"},
     {"Show animation sources of cursorTarget"; configFile >> "cfgVehicles" >> typeof cursorTarget >> "AnimationSources"},
     {"Show nearest objects"; 
@@ -65,8 +103,8 @@ _myHistory = [
     {"Show secondary weapon player config"; configFile >> "CfgWeapons" >> secondaryWeapon player},
     {"Find all current display"; [1000, 1000] call SQFCALC_FindAllDisplay},
     {"Add teleport player group"; onMapSingleClick {{ _x setpos _pos } foreach units player; true}},
-    {"env1" call compile preprocessFileLineNumbers "\userconfig\SQFCalculator\envs\set.sqf"},
-    {[configFile >> "CfgVehicles"] call compile preprocessFileLineNumbers "\userconfig\SQFCalculator\dumpConfig.sqf"},
+    {"env1" call compile preprocessFileLineNumbers "\userconfig\sqf-calculator\envs\set.sqf"},
+    {[configFile >> "CfgVehicles"] call compile preprocessFileLineNumbers "\userconfig\sqf-calculator\dumpConfig.sqf"},
     
     // SNIPPETS
 
@@ -81,14 +119,25 @@ _myHistory = [
 ];
 
 
+///////////////////////////////////////////////////
 
-#define arg(x) (_this select (x))
-#define argIf(x) if(count _this > (x))
-#define argIfType(x,t) if(argIf(x)then{typeName arg(x) == (t)}else{false})
-#define argSafe(x) argIf(x)then{arg(x)}
-#define argSafeType(x,t) argIfType(x,t)then{arg(x)}
-#define argOr(x,v) (argSafe(x)else{v})
+#define arg(i)          (_this select (i))
+#define ifExistArg(i)   if (count _this > (i))
+#define ifArgType(i,t)  if (ifExistArg(i) then { typeName arg(i) == (t) } else { false })
+#define argIfExist(i)   ifExistArg(i) then { arg(i) }
+#define argIfType(i,t)  ifArgType(i,t) then { arg(i) }
+#define argOr(i,v)      argIfExist(i) else { v }
+
+#define __item(a,v) ((a)select(((v)min(count(a)-1))max 0))
+#define __itemr(a,v) (__item((a),if((v)<0)then{count(a)+(v)}else{v}))
 #define __push(a,v) (a)set[count(a),(v)]
+#define __pushTo(a) call{(a)set[count(a),_this]}
+#define __top(a) ((a)select((count(a)-1)max 0))
+#define __pop(a) (0 call{_this=__top(a);(a)resize((count(a)-1)max 0);_this})
+#define __writeTop(a,v) (a)set[count(a)-1,v]
+#define __randomSelect(a) ((a)select floor random count(a))
+
+///////////////////////////////////////////////////
 
 // Helpers
 SQFCALC_MapGrep = {
@@ -198,7 +247,7 @@ SQFCALC_GetTurretsWeapons = {
             if (isClass _class) then {
                 _currentPath = _path + [_i];
                 {
-                    _result set [count _result, [_x, _x call _getAnyMagazines, _currentPath]];
+                    _result set [count _result, [_x, _x call _getAnyMagazines, _currentPath, str _class]];
                 } foreach getArray (_class >> "weapons");
                 _class = _class >> "turrets";
                 if (isClass _class) then {
@@ -257,7 +306,7 @@ SQFCALC_GetVehicleWeapons = {
     _weapons;
 };
 
-
+//
 // Example:
 // [typeOf cursorTarget, "M240_veh_2"] call SQFCALC_GetTurretPath
 // ["M1A2_US_TUSK_MG_EP1", "M240_veh_2"] call SQFCALC_GetTurretPath
@@ -301,7 +350,9 @@ SQFCALC_GetModelName = {
     str parseText ("< " + toString _this);
 };
 
+//
 // ["wall_indfnc_3.p3d", getpos player, 4] call SQFCALC_GetNearObjectByModelName
+//
 
 SQFCALC_GetNearObjectByModelName = {
     private ["_modelname", "_position", "_radius"];
@@ -314,75 +365,78 @@ SQFCALC_GetNearObjectByModelName = {
 };
 
 SQFCALC_FindAllDisplay = {
-    private ["_displayList", "_display", "_ctrlList", "_ctrl", "_n", "_m"];
+    private [
+        "_ctrlTypes", "_getCtrlId", "_n", "_m", "_displayList", "_displayMap", 
+        "_display", "_idd", "_matchedDisplays", "_ctrlList", "_ctrl"
+    ];
+    _ctrlTypes = [
+        "CT_STATIC",             0x00,
+        "CT_BUTTON",             0x01,
+        "CT_EDIT",               0x02,
+        "CT_SLIDER",             0x03,
+        "CT_COMBO",              0x04,
+        "CT_LISTBOX",            0x05,
+        "CT_TOOLBOX",            0x06,
+        "CT_CHECKBOXES",         0x07,
+        "CT_PROGRESS",           0x08,
+        "CT_HTML",               0x09,
+        "CT_STATIC_SKEW",        0x0A,
+        "CT_ACTIVETEXT",         0x0B,
+        "CT_TREE",               0x0C,
+        "CT_STRUCTURED_TEXT",    0x0D,
+        "CT_CONTEXT_MENU",       0x0E,
+        "CT_CONTROLS_GROUP",     0x0F,
+        "CT_SHORTCUT_BUTTON",    0x10, 
+        "CT_XKEYDESC",           0x28,
+        "CT_XBUTTON",            0x29,
+        "CT_XLISTBOX",           0x2A,
+        "CT_XSLIDER",            0x2B,
+        "CT_XCOMBO",             0x2C,
+        "CT_ANIMATED_TEXTURE",   0x2D,
+        "CT_OBJECT",             0x50,
+        "CT_OBJECT_ZOOM",        0x51,
+        "CT_OBJECT_CONTAINER",   0x52,
+        "CT_OBJECT_CONT_ANIM",   0x53,
+        "CT_LINEBREAK",          0x62,
+        "CT_USER",               0x63,
+        "CT_MAP",                0x64,
+        "CT_MAP_MAIN",           0x65,
+        "CT_LIST_N_BOX",         0x66
+    ] call {
+        private "_list";
+        _list = [];
+        for "_i" from 0 to count _this -1 step 2 do {
+            _list set [_this select (_i+1), _this select _i]
+        };
+        _list;
+    };
+
     _n = argOr(0, 1000);
     _m = argOr(1, 1000);
+    
     _displayList = [];
+
     for "_i" from 0 to _n do {
+        
         _display = findDisplay _i;
         if (! isNull _display) then {
             _ctrlList = [];
+            _matchedDisplays = [];
             _displayList set [count _displayList, [_display, _ctrlList]];
             for "_i" from 0 to _m do {
                 _ctrl = _display displayCtrl _i;
                 if (! isNull _ctrl) then {
-                    _ctrlList set [count _ctrlList,
-                    str _ctrl + ([", not shown", ", shown"] select ctrlShown _ctrl) + ", " + str ctrlType _ctrl];
+                    _ctrlList set [
+                        count _ctrlList,
+                        parseText format ['%1, %2, %3, "%4"',
+                            _ctrl, ["hidden", "shown"] select ctrlShown _ctrl, 
+                            __item(_ctrlTypes, ctrlType _ctrl), ctrlText _ctrl
+                        ]
+                    ];
                 };
             };
         };
     };
     _displayList;
 };
-
-SQFCALC_RC = {
-    private ["_codestr", "_logic"];
-    _codestr = "call " + str _this;
-    _logic = "logic" createVehicleLocal [0,0];
-    _logic setVehicleInit _codestr;
-    processInitCommands;
-    clearVehicleInit _logic;
-    deleteVehicle _logic;
-};
-
-//
-// The maximum time allowed for execution of the expression
-// For example, the total time for output full game config may be 20 seconds and more.
-// At the latest patches ArmA2, well, sooo much time: ((
-//
-
-_maxTimeout = 40; //120;
-
-//
-// Codes keyboard shortcuts, with clamped alt
-//
-// 
-//_HKOpenConsole = 0x3B; // F1 key
-//_HKOpenConsole = 0x3C; // F2 key
-//_HKOpenConsole = 0x29; // tilda key
-_HKOpenConsole = 0x52;   // grey 0
-//_HKInput = 2;
-//_HKDisplay = 3;
-//_HKDisplay2 = 4;
-//_HKHistory = 0x23;
-//_HKProcesses = 0x24
-//_HKDemo = 0x20;
-//_HKHelp = 0x3B;
-//_HKLeft =
-//_HKRight =
-//
-
-//
-// Casual shortcut
-//
-
-cfg = configFile;
-cfga = configFile >> "CfgAmmo";
-cfgm = configFile >> "CfgMagazines";
-cfgw = configFile >> "CfgWeapons";
-cfgv = configFile >> "CfgVehicles";
-mcfg = missionConfigFile;
-ccfg = campaignConfigFile;
-
-// showCommandingMenu "";
 

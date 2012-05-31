@@ -13,6 +13,14 @@
 #define __processListRef VDMJ_SQFConsole_processListRef
 #define __hudFlag VDMJ_SQFConsole_HUD
 
+// Display's KeyDown handler (args: Control, KeyCodes, Shift, Ctrl, Alt)
+// Only for OnKeyDown and OnKeyUp handlers!
+#define __argSelf arg(0)
+#define __argKeyCode arg(1)
+#define __argShiftPressed arg(2)
+#define __argCtrlPressed arg(3)
+#define __argAltPressed arg(4)
+
 private "_self";
 _self = _this;
 
@@ -54,9 +62,9 @@ _self = _this;
 
     _handlers = [
         _rsc, "KeyDown", {  // Display's KeyDown handler (args: Control, KeyCodes, Shift, Ctrl, Alt)
-            if (arg(4)) then {
+            if (__argAltPressed) then {
                 private "_keyCode";
-                _keyCode = arg(1);
+                _keyCode = __argKeyCode;
                 _hotKeysRegister find _keyCode call {
                     if (_this > 0) then {
                         switch (_hotKeysRegister select (_this - 1)) do {
@@ -75,8 +83,8 @@ _self = _this;
             };
         },
         "InputText", "KeyDown", {
-            if (arg(1) == DIK_RETURN) then {
-                if (arg(3)) then { // Ctrl
+            if (__argKeyCode == DIK_RETURN) then {
+                if (__argCtrlPressed) then {
                     ctrlText _ctrlInputText call _addProcess;
                 } else {
                     ctrlText _ctrlInputText call _execExpression;
@@ -84,45 +92,54 @@ _self = _this;
             };
         },
         "SelectWin", "ToolBoxSelChanged", {
-            arg(1) call _setActiveWin;
+            __argKeyCode call _setActiveWin;
         },
         "WatchButton", "ButtonClick", {
             ctrlText _ctrlInputText call _addProcess;
         },
         "ConfigOutputModeButton", "ButtonClick", {
-            _self = arg(0);
-            _selfConf = arg(0) call _dsplGetConfByCtrl;
+            _self = __argSelf;
+            _selfConf = _self call _dsplGetConfByCtrl;
             _texts = getArray (_selfConf >> "texts");
             _index = (((_texts find ctrlText _self) + 1) % count _texts);
             _self ctrlSetText (_texts select _index);
             _configOutputMode = _index;
         },
-        "HistoryList", "LBDblClick", {
+        "ResultFormated", "KeyDown", {
+            if (__argCtrlPressed) exitwith {
+                if (
+                    __argKeyCode == DIK_C || 
+                    __argKeyCode == DIK_INSERT
+                ) exitwith {
+                    __argSelf call _copyFromListBoxToClipboard
+                };
+            };
+            if (__argAltPressed) exitwith {
+                switch (__argKeyCode) do {
+                    case DIK_LBRACKET: { __argSelf call _moveCurSelToOpeningBracket };
+                    case DIK_RBRACKET: { __argSelf call _moveCurSelToClosingBracket };
+                };
+            };
+        },
+        "HistoryList", "KeyDown", {
+            if (__argCtrlPressed) exitwith {
+                if (__argKeyCode == DIK_C || __argKeyCode == DIK_INSERT) exitwith {
+                    copyToClipboard (__argSelf lbText lbCurSel __argSelf);
+                };
+            };
+            if (__argShiftPressed) exitwith {};
+            if (__argAltPressed) exitwith {};
+            switch (__argKeyCode) do {
+                case DIK_INSERT: { call _setFromHistory };
+                case DIK_DELETE: { call _delFromHistory };
+                case DIK_RETURN: { call _execFromHistory };
+            };
+        },
+        "HistoryList", "lbDblClick", {
             call _execFromHistory
         },
-        ["ResultFormated", "HistoryList"], "KeyDown", { // args: Control, KeyCodes, Shift, Ctrl, Alt
-            if (arg(3)) exitwith { // Ctrl
-                switch (arg(1)) do {
-                    case DIK_C:      { arg(0) call _copyFromListBoxToClipboard; };
-                    case DIK_INSERT: { arg(0) call _copyFromListBoxToClipboard; };
-                };
-            };
-            if (arg(4)) exitwith { // Alt
-                switch (arg(1)) do {
-                    case DIK_LBRACKET: { arg(0) call _moveCurSelToOpeningBracket; };
-                    case DIK_RBRACKET: { arg(0) call _moveCurSelToClosingBracket; };
-                };
-            };
-            if (arg(0) == _ctrlHistoryList) exitwith {
-                switch (arg(1)) do {
-                    case DIK_INSERT: { call _setFromHistory; };
-                    case DIK_DELETE: { call _delFromHistory; };
-                    case DIK_RETURN: { call _execFromHistory; };
-                }
-            };
-        },
-        "ProcessList", "KeyDown", { // args: Control, KeyCodes, Shift, Ctrl, Alt
-            if ( arg(1) == DIK_DELETE ) then {
+        "ProcessList", "KeyDown", {
+            if (__argKeyCode == DIK_DELETE) then {
                 lbCurSel _ctrlProcessList call _killProcess;
             };
         },
@@ -144,7 +161,7 @@ _self = _this;
                     _linkData call _execExpression;
                 };
                 case "src": {
-                    arg(0) htmlLoad _linkData;
+                    __argSelf htmlLoad _linkData;
                 };
             };
         }
@@ -176,7 +193,7 @@ _self = _this;
         _getActiveWinSibling = {
             ((
                 for "_i" from 0 to count _windowStruct - 1 do {
-                    if ( ctrlShown (_windowStruct select _i) ) exitwith { _i }; 0
+                    if (ctrlShown (_windowStruct select _i)) exitwith { _i }; 0
                 }
             ) + _this) % count _windowStruct
         };
@@ -232,10 +249,10 @@ _self = _this;
             _offset = 0;
             for "_i" from 0 to count _array do {
                 _item = _array select _i;
-                if ( _offset > 0 ) then {
+                if (_offset > 0) then {
                     _array set [_i - _offset, _item]
                 };
-                if ( _item in _items ) then {
+                if (_item in _items) then {
                     _offset = _offset + 1;
                 };
             };
@@ -249,8 +266,8 @@ _self = _this;
             _buffer = [];
             _char0D0A = toString [13,10];
             for "_i" from _currentLine to count _resultCacheDepth - 1 do {
-                if ( (_i > _currentLine) && (_resultCacheDepth select _i) <= _currentDepth ) exitwith {
-                    if ( _currentLine + 1 < _i ) then { __push(_buffer, _resultCacheText select _i) };
+                if ((_i > _currentLine) && (_resultCacheDepth select _i) <= _currentDepth) exitwith {
+                    if (_currentLine + 1 < _i) then { __push(_buffer, _resultCacheText select _i) };
                 };
                 __push(_buffer, _resultCacheText select _i);
             };
@@ -265,7 +282,7 @@ _self = _this;
             _currentLine = lbCurSel _listBox;
             _currentDepth = _resultCacheDepth select _currentLine;
             for "_i" from _currentLine to 0 step -1 do {
-                if ( (_i < _currentLine) && (_resultCacheDepth select _i) <= _currentDepth ) exitwith {
+                if ((_i < _currentLine) && (_resultCacheDepth select _i) <= _currentDepth) exitwith {
                     _listBox lbSetCurSel _i;
                 };
             };
@@ -277,7 +294,7 @@ _self = _this;
             _currentLine = lbCurSel _listBox;
             _currentDepth = _resultCacheDepth select _currentLine;
             for "_i" from _currentLine to count _resultCacheDepth - 1 do {
-                if ( (_i > _currentLine) && (_resultCacheDepth select _i) <= _currentDepth ) exitwith {
+                if ((_i > _currentLine) && (_resultCacheDepth select _i) <= _currentDepth) exitwith {
                     _listBox lbSetCurSel _i;
                 };
             };
@@ -286,8 +303,8 @@ _self = _this;
         _addProcess = {
             private "_code";
             _code = compile _this;
-            if ( ! isNil { call _code } ) then {
-                if ( isNil '__hudFlag' ) then {
+            if (! isNil { call _code }) then {
+                if (isNil '__hudFlag') then {
                     __hudFlag = true;
                     78934 cutRsc ["RscVdmjSqfCalculatorHUD", "PLAIN"];
                 };
@@ -319,7 +336,7 @@ _self = _this;
             _list = arg(0);
             _char = arg(1);
 
-            if ( count _list < 1 ) exitwith {""};
+            if (count _list < 1) exitwith {""};
 
             for "" from 1 to ceil(__log2(count _list)) do {
                 _size = count _list / 2;
@@ -330,7 +347,7 @@ _self = _this;
                     _list set [_i, (_list select _j) + _char + (_list select (_j+1))];
                     _j = _j + 2;
                 };
-                if ( _subsize != _oversize ) then { // to add a tail
+                if (_subsize != _oversize) then { // to add a tail
                     _list set [_j/2, _list select _j];
                 };
                 _list resize _oversize;
@@ -350,7 +367,7 @@ _self = _this;
                             "_HKProcesses", "_HKDemo", "_HKHelp", "_HKLeft", "_HKRight"
                         ];
                         call compile _this;
-                        [ 
+                        [
                             _myHistory, _maxTimeout,
                             [
                                 ["HKOpenConsole", _HKOpenConsole],
@@ -383,7 +400,7 @@ _self = _this;
                     };
                     arg(0) call { if (typeName _this == "ARRAY") then { _this call _addToHistory; }; };
                     arg(1) call { if (typeName _this == "SCALAR") then { _maxTimeout = _this; }; };
-                    { 
+                    {
                         _x call _regHK
                     } foreach arg(2);
                 };
@@ -437,7 +454,7 @@ _self = _this;
                 _i = _ctrlResultFormated lbAdd _text;
                 _resultCacheText set [_i, _text];
                 _resultCacheDepth set [_i, _depth];
-                if ( diag_tickTime > _timeout ) then {
+                if (diag_tickTime > _timeout) then {
                     breakOut "_displayValueScope";
                 };
             };
@@ -494,18 +511,18 @@ _self = _this;
             _traverseConfigTree = {
                 private "_confName";
                 _confName = configName _this;
-                if ( _configOutputMode == 2 ) exitwith {
+                if (_configOutputMode == 2) exitwith {
                     "config entry: {" + (str _this) + "}" call _traverseTree
                 };
-                if ( isText _this ) exitwith {
+                if (isText _this) exitwith {
                     _confName + " = " + (getText _this call _escapeString) + ";" call _writeLine
                 };
-                if ( isNumber _this ) exitwith {
+                if (isNumber _this) exitwith {
                     _confName + " = " + str getNumber _this + ";" call _writeLine
                 };
-                if ( isArray _this ) exitwith {
+                if (isArray _this) exitwith {
                     getArray _this call {
-                        if ( count _this == 0 ) then {
+                        if (count _this == 0) then {
                             _confName + "[] = {};" call _writeLine;
                         } else {
                             _commaAfterBracket = ";";
@@ -515,15 +532,15 @@ _self = _this;
                         };
                     };
                 };
-                if ( isClass _this ) exitwith {
+                if (isClass _this) exitwith {
                     "class " + _confName + (
                         configName inheritsFrom _this call {
-                            if ( _this == "" ) then { "" } else { " : " + _this }
+                            if (_this == "") then { "" } else { " : " + _this }
                         }
                     ) + " {" call _writeLine;
 
                     // swither ====
-                    if ( _configOutputMode == 0 ) then {
+                    if (_configOutputMode == 0) then {
                         _this = _this call _collectInheritedProperties;
                     };
 
@@ -548,23 +565,23 @@ _self = _this;
                 switch (toUpper typeName _this) do {
                     case "ARRAY" : {
                         private ["_str", "_arr", "_to", "_lBracket", "_rBracket"];
-                        if ( _isConfigContext ) then {
+                        if (_isConfigContext) then {
                             _lBracket = "{";
                             _rBracket = "}";
                         } else {
                             _lBracket = "[";
                             _rBracket = "]";
                         };
-                        if ( _commaAfterBracket == "" ) then {
+                        if (_commaAfterBracket == "") then {
                             _lBracket call _writeLine;
                         };
                         _depth = _depth + 1;
                         _to = count _this - 1;
 
                         if (
-                            if ( count toArray str _this < 90 ) then {
+                            if (count toArray str _this < 90) then {
                                 {
-                                    if ( typeName _x in ["ARRAY", "CONFIG"] ) exitwith {false}; true
+                                    if (typeName _x in ["ARRAY", "CONFIG"]) exitwith {false}; true
                                 } foreach _this;
                             } else {
                                 false
@@ -638,20 +655,20 @@ _self = _this;
 
         _maxTimeout = 20;
 
-        if ( isNil {__getHistroy} ) then {
+        if (isNil {__getHistroy}) then {
             __setHistroy([]);
         };
         _commandsHistory = __getHistroy;
         call _applySettingsFromFile;
 
-        if ( isNil '__processListRef' ) then {
+        if (isNil '__processListRef') then {
             __processListRef = [[]];
         };
 
         call _updateProcessList;
 
         (missionConfigFile >> "RscSqfCalcDemo") call {
-            if ( !isClass _this ) exitwith {};
+            if (!isClass _this) exitwith {};
             private "_pos";
             _pos = ctrlPosition _ctrlDemo;
             _pos set [3, getNumber(_this >> "htmlControlHeight")];

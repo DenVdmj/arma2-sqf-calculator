@@ -1,21 +1,6 @@
 @echo off
 @setlocal enabledelayedexpansion
 
-rem ----------------------------------------------------------------------------------------------
-rem   Relative (by Arma2 folder) path to mod folder
-set   RelativeModDir=@\$vdmj\sqf-calculator
-rem   Addons directories list, may be a mask, as %~dp0*
-set   DirList="%~dp0sqf-calculator"
-rem   Requires binarize
-set   Binarize=off
-rem   Requires signing
-set   Sign=on
-rem   Mask of added files
-set   Mask=*
-rem   Current path
-set   ThisPath=%~dp0
-rem ----------------------------------------------------------------------------------------------
-
 rem Read install path of BinPBO.exe programm
 call :RegRead "BinPBOPath" "HKLM\SOFTWARE\Bohemia Interactive\BinPBO Personal Edition" "MAIN"
 
@@ -24,6 +9,7 @@ call :RegRead "ArmA2Path" "HKLM\SOFTWARE\Bohemia Interactive Studio\ArmA 2" "MAI
 
 rem Relative path of addon folder
 call :CanonizePath "TargetAddonDir" "%ArmA2Path%\%RelativeModDir%\addons"
+call :GetRevisionNumber "RevisionNumber"
 
 if not exist %TargetAddonDir% (
     mkdir "%TargetAddonDir%"
@@ -35,8 +21,10 @@ if exist "mod.cpp" (
 
 call :MakePboProcess "%DirList%"
 
-if exist "make-distrib.bat" (
-    call "make-distrib.bat"
+if not "%MakeDistrib%"=="" (
+    if exist "make-distrib.bat" (
+        call "make-distrib.bat"
+    )
 )
 
 goto :eof
@@ -49,7 +37,7 @@ rem ============================================================================
     call :CreateTempDir "temp_binarize_pbos" "%temp%"
 
     echo --------------------------------
-    echo -- START CREATE PBO
+    echo --      START CREATE PBO      --
     echo --------------------------------
 
     for /D %%i in (%~1) do (
@@ -57,17 +45,22 @@ rem ============================================================================
             del "%TargetAddonDir%\%%~ni.*"
         )
         if "%Binarize%"=="on" (
-            "%BinPBOPath%\BinPBO.exe" "%%~i" "%TargetAddonDir%" -BINARIZE -TEMP "%temp_binarize_pbos%" -INCLUDE "%Mask%"
+            "%BinPBOPath%\BinPBO.exe" "%%~i" "%TargetAddonDir%" -BINARIZE -TEMP "%temp_binarize_pbos%" %BinarizeINCLUDE% 
+            
         ) else (
-            "%BinPBOPath%\BinPBO.exe" "%%~i" "%TargetAddonDir%" -INCLUDE "%Mask%"
+            "%BinPBOPath%\BinPBO.exe" "%%~i" "%TargetAddonDir%" %BinarizeINCLUDE%
         )
     )
 
     del "%Mask%"
-    rmdir /s /q "%temp_binarize_pbos%"
+    rmdir /S /Q "%temp_binarize_pbos%"
+    mkdir "%TargetAddonDir%\log"
+    for %%i in ("%TargetAddonDir%\*.log") do (
+        move "%%~i" "%TargetAddonDir%\log\%%~nxi"
+    )
 
     echo --------------------------------
-    echo -- START SIGN PBO
+    echo --       START SIGN PBO      --
     echo --------------------------------
 
     if "%Sign%"=="on" (
@@ -85,7 +78,7 @@ rem ============================================================================
         )
 
     )
-
+    
 goto :eof
 
 :RegRead
@@ -115,6 +108,12 @@ goto :eof
     for /f "tokens=1,2,3,4,5,6,7 delims=:,. " %%i in ("%DATE%:%TIME%") do (
         set %~1=%~2/___%~1___%%i%%j%%k%%l%%m%%n_%%o___
         mkdir "%~2/___%~1___%%i%%j%%k%%l%%m%%n_%%o___"
+    )
+goto :eof
+
+:GetRevisionNumber
+    for /F "usebackq tokens=1,2" %%i in ("%~dp0..\.hg\cache\tags") do (
+        set %~1=%%j
     )
 goto :eof
 
