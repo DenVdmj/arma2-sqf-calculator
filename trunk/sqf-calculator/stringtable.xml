@@ -1,228 +1,102 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project name="RLS">
+<Project name="SQFConsole">
 <Package name="SQFConsole">
 
-<Key ID="str/vdmj/sqf-calculator/demo-void-file">
-    <English>sqf-calculator\html\demo.en.html</English>
-    <Russian>sqf-calculator\html\demo.ru.html</Russian>
-    <Polish>sqf-calculator\html\demo.en.html</Polish>
-    <Czech>sqf-calculator\html\demo.en.html</Czech>
-    <SerboCroatian>sqf-calculator\html\demo.en.html</SerboCroatian>
-    <Slovak>sqf-calculator\html\demo.en.html</Slovak>
-    <German>sqf-calculator\html\demo.en.html</German>
-    <French>sqf-calculator\html\demo.en.html</French>
-    <Spanish>sqf-calculator\html\demo.en.html</Spanish>
-    <Italian>sqf-calculator\html\demo.en.html</Italian>
+<Key ID="str/vdmj/sqf-calculator/locale">
+    <English>EN</English>
+    <Russian>RU</Russian>
+    <Original>EN</Original>
 </Key>
-
-<Key ID="str/vdmj/sqf-calculator/help-file">
-    <English>sqf-calculator\html\help.en.html</English>
-    <Russian>sqf-calculator\html\help.ru.html</Russian>
-    <Polish>sqf-calculator\html\help.en.html</Polish>
-    <Czech>sqf-calculator\html\help.en.html</Czech>
-    <SerboCroatian>sqf-calculator\html\help.en.html</SerboCroatian>
-    <Slovak>sqf-calculator\html\help.en.html</Slovak>
-    <German>sqf-calculator\html\help.en.html</German>
-    <French>sqf-calculator\html\help.en.html</French>
-    <Spanish>sqf-calculator\html\help.en.html</Spanish>
-    <Italian>sqf-calculator\html\help.en.html</Italian>
-</Key>
-
 
 <Key ID="str/vdmj/sqf-calculator/title">
     <English>Calculator</English>
     <Russian>Калькулятор</Russian>
-    <Polish>Calculator</Polish>
-    <Czech>Calculator</Czech>
-    <SerboCroatian>Calculator</SerboCroatian>
-    <Slovak>Calculator</Slovak>
-    <German>Calculator</German>
-    <French>Calculator</French>
-    <Spanish>Calculator</Spanish>
-    <Italian>Calculator</Italian>
+    <Original>Calculator</Original>
 </Key>
 
 <Key ID="str/vdmj/sqf-calculator/exec">
     <English>Exec</English>
     <Russian>Выполнить</Russian>
-    <Polish>Exec</Polish>
-    <Czech>Exec</Czech>
-    <SerboCroatian>Exec</SerboCroatian>
-    <Slovak>Exec</Slovak>
-    <German>Exec</German>
-    <French>Exec</French>
-    <Spanish>Exec</Spanish>
-    <Italian>Exec</Italian>
+    <Original>Exec</Original>
 </Key>
 
 <Key ID="str/vdmj/sqf-calculator/formated">
     <English>Result</English>
     <Russian>Результат</Russian>
-    <Polish>Result</Polish>
-    <Czech>Result</Czech>
-    <SerboCroatian>Result</SerboCroatian>
-    <Slovak>Result</Slovak>
-    <German>Result</German>
-    <French>Result</French>
-    <Spanish>Result</Spanish>
-    <Italian>Result</Italian>
+    <Original>Result</Original>
 </Key>
 
 <Key ID="str/vdmj/sqf-calculator/display">
     <English>Buffer</English>
     <Russian>Буфер</Russian>
-    <Polish>Buffer</Polish>
-    <Czech>Buffer</Czech>
-    <SerboCroatian>Buffer</SerboCroatian>
-    <Slovak>Buffer</Slovak>
-    <German>Buffer</German>
-    <French>Buffer</French>
-    <Spanish>Buffer</Spanish>
-    <Italian>Buffer</Italian>
+    <Original>Buffer</Original>
 </Key>
 
 <Key ID="str/vdmj/sqf-calculator/history">
     <English>History</English>
     <Russian>Истор!я</Russian>
-    <Polish>History</Polish>
-    <Czech>History</Czech>
-    <SerboCroatian>History</SerboCroatian>
-    <Slovak>History</Slovak>
-    <German>History</German>
-    <French>History</French>
-    <Spanish>History</Spanish>
-    <Italian>History</Italian>
+    <Original>History</Original>
 </Key>
 
 <Key ID="str/vdmj/sqf-calculator/processes">
     <English>Processes</English>
     <Russian>Процессы</Russian>
-    <Polish>Processes</Polish>
-    <Czech>Processes</Czech>
-    <SerboCroatian>Processes</SerboCroatian>
-    <Slovak>Processes</Slovak>
-    <German>Processes</German>
-    <French>Processes</French>
-    <Spanish>Processes</Spanish>
-    <Italian>Processes</Italian>
+    <Original>Processes</Original>
 </Key>
 
 <Key ID="str/vdmj/sqf-calculator/demo">
     <English>Demo</English>
     <Russian>Демо</Russian>
-    <Polish>Demo</Polish>
-    <Czech>Demo</Czech>
-    <SerboCroatian>Demo</SerboCroatian>
-    <Slovak>Demo</Slovak>
-    <German>Demo</German>
-    <French>Demo</French>
-    <Spanish>Demo</Spanish>
-    <Italian>Demo</Italian>
+    <Original>Demo</Original>
 </Key>
 
 <Key ID="str/vdmj/sqf-calculator/help">
     <English>Help</English>
     <Russian>Справка</Russian>
-    <Polish>Help</Polish>
-    <Czech>Help</Czech>
-    <SerboCroatian>Help</SerboCroatian>
-    <Slovak>Help</Slovak>
-    <German>Help</German>
-    <French>Help</French>
-    <Spanish>Help</Spanish>
-    <Italian>Help</Italian>
+    <Original>Help</Original>
 </Key>
 
 
 <Key ID="str/vdmj/sqf-calculator/watch">
     <English>Watch</English>
     <Russian>Следить</Russian>
-    <Polish>Watch</Polish>
-    <Czech>Watch</Czech>
-    <SerboCroatian>Watch</SerboCroatian>
-    <Slovak>Watch</Slovak>
-    <German>Watch</German>
-    <French>Watch</French>
-    <Spanish>Watch</Spanish>
-    <Italian>Watch</Italian>
+    <Original>Watch</Original>
 </Key>
 
 <Key ID="str/vdmj/sqf-calculator/config-output-mode.full">
     <English>Full config</English>
     <Russian>Полный конфиг</Russian>
-    <Polish>Full config</Polish>
-    <Czech>Full config</Czech>
-    <SerboCroatian>Full config</SerboCroatian>
-    <Slovak>Full config</Slovak>
-    <German>Full config</German>
-    <French>Full config</French>
-    <Spanish>Full config</Spanish>
-    <Italian>Full config</Italian>
+    <Original>Full config</Original>
 </Key>
 
 <Key ID="str/vdmj/sqf-calculator/config-output-mode.as-is">
     <English>As Is config</English>
     <Russian>Стандартный конфиг</Russian>
-    <Polish>As Is config</Polish>
-    <Czech>As Is config</Czech>
-    <SerboCroatian>As Is config</SerboCroatian>
-    <Slovak>As Is config</Slovak>
-    <German>As Is config</German>
-    <French>As Is config</French>
-    <Spanish>As Is config</Spanish>
-    <Italian>As Is config</Italian>
+    <Original>As Is config</Original>
 </Key>
 
 <Key ID="str/vdmj/sqf-calculator/config-output-mode.folded">
     <English>Folded config</English>
     <Russian>Сворачивать конфиг</Russian>
-    <Polish>Folded config</Polish>
-    <Czech>Folded config</Czech>
-    <SerboCroatian>Folded config</SerboCroatian>
-    <Slovak>Folded config</Slovak>
-    <German>Folded config</German>
-    <French>Folded config</French>
-    <Spanish>Folded config</Spanish>
-    <Italian>Folded config</Italian>
+    <Original>Folded config</Original>
 </Key>
 
 <Key ID="str/vdmj/sqf-calculator/config-output-mode.tooltip">
     <English>Display config mode</English>
     <Russian>Режим отображения конфига</Russian>
-    <Polish>Display config mode</Polish>
-    <Czech>Display config mode</Czech>
-    <SerboCroatian>Display config mode</SerboCroatian>
-    <Slovak>Display config mode</Slovak>
-    <German>Display config mode</German>
-    <French>Display config mode</French>
-    <Spanish>Display config mode</Spanish>
-    <Italian>Display config mode</Italian>
+    <Original>Display config mode</Original>
 </Key>
 
 <Key ID="str/vdmj/sqf-calculator/mod.cpp.name">
     <English>Script console «Calculator»</English>
     <Russian>Скрипт-консоль «Калькулятор»</Russian>
-    <Polish>Script console «Calculator»</Polish>
-    <Czech>Script console «Calculator»</Czech>
-    <SerboCroatian>Script console «Calculator»</SerboCroatian>
-    <Slovak>Script console «Calculator»</Slovak>
-    <German>Script console «Calculator»</German>
-    <French>Script console «Calculator»</French>
-    <Spanish>Script console «Calculator»</Spanish>
-    <Italian>Script console «Calculator»</Italian>
+    <Original>Script console «Calculator»</Original>
 </Key>
 
 <Key id="str/vdmj/sqf-calculator/mod.cpp.action-name">
     <English>Website</English>
     <Russian>Сайт проекта</Russian>
-    <Polish>Website</Polish>
-    <Czech>Website</Czech>
-    <SerboCroatian>Website</SerboCroatian>
-    <Slovak>Website</Slovak>
-    <German>Website</German>
-    <French>Website</French>
-    <Spanish>Website</Spanish>
-    <Italian>Website</Italian>
+    <Original>Website</Original>
 </Key>
 
 </Package>

@@ -5,10 +5,10 @@
 
 #include "\sqf-calculator\common.hpp"
 #include "\sqf-calculator\dik-codes.hpp"
-#include "\sqf-calculator\rlsFuncCreateDialog.sqf";
+#include "\sqf-calculator\gui.sqf"
 
-#define __setHistroy(history) __uiSet(SQFConsole/History, history)
-#define __getHistroy __uiGet(SQFConsole/History)
+#define __setHistroy(history) ((history)__uiSet(History))
+#define __getHistroy __uiGet(History)
 
 #define __processListRef VDMJ_SQFConsole_processListRef
 #define __hudFlag VDMJ_SQFConsole_HUD
@@ -24,7 +24,7 @@
 private "_self";
 _self = _this;
 
-({
+{
     _rsc = "RscVdmjSqfCalculator";
     _parent = _self;
     _private = [
@@ -689,7 +689,7 @@ _self = _this;
         __setHistroy(_commandsHistory);
     };
 
-} call _funcCreateDialog);
+} invoke(CreateDialog);
 
 showCommandingMenu "";
 true;

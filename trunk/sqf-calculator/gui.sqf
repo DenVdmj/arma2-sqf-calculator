@@ -1,24 +1,22 @@
-// SQF
+﻿// SQF
 //
-// sqf-library "\rls\std\gui.sqf"
-// Copyright (c) 2009-2010 Denis Usenko (DenVdmj)
+// Reformed from <<sqf-library "\css\lib\gui.sqf">>
+// Copyright (c) 2009-2012 Denis Usenko (DenVdmj)
 // MIT-style license
 //
 
-#define __setStorage(value) __uiSet(CreateDialog/Storage, value)
+#define __setStorage __uiSet(CreateDialog/Storage)
 #define __getStorage __uiGet(CreateDialog/Storage)
 
-if (isNil{__getStorage}) then { __setStorage([]) };
+if (isNil{__getStorage}) then { [] __setStorage };
 
-private "_funcCreateDialog";
-
-_funcCreateDialog = {
+func(CreateDialog) = {
 
     private ["_rsc", "_display", "_parent", "_private", "_handlers", "_constructor", "_destructor"];
 
     disableSerialization;
 
-    // default values
+    // Automatic variables — default values
     _display = displayNull;
     _parent = objNull;
     _private = [];
@@ -53,7 +51,7 @@ _funcCreateDialog = {
             _thisScope = [
                 "_thisScope", "_confDialog", "_idd",
                 "_dsplPrivateValues", "_dsplMapClassnames", "_dsplMapCtrls", "_dsplMapConfs", "_dsplGetConfByCtrl",
-                "_loadCode", "_saveCode", "_eventHandlerExecutor", "_ehTpl", "_destructorTpl", "_dsplDataIndex",
+                "_dsplSpawn", "_loadCode", "_saveCode", "_eventHandlerExecutor", "_ehTpl", "_destructorTpl", "_dsplDataIndex",
                 "_handlersList", "_toArray", "_createDisplay", "_storage", "_ehCtrl", "_ehType", "_ehCode"
             ];
             private _thisScope;
@@ -72,7 +70,7 @@ _funcCreateDialog = {
 
             _idd = getNumber(_confDialog >> "idd");
 
-            // the idd must be valid, creating dialog must be successful, otherwise an error - user asked incorrect resource name (_rsc)
+            // the idd must be valid, creating dialog must be successful, otherwise an error — user asked incorrect resource name (_rsc)
             if (_idd < 0) then {
                 throw ("negative idd in resource class " + str _rsc)
             };
@@ -100,10 +98,10 @@ _funcCreateDialog = {
             _dsplMapCtrls = [];
             _dsplMapConfs = [];
 
-            // user-defined variable _private -- declare variables private dialogue;
-            // _dsplPrivateValues -- keeps the values of these variables
+            // user-defined variable _private — declare variables private dialogue;
+            // _dsplPrivateValues — keeps the values of these variables
             _dsplPrivateValues = [];
-            _dsplPrivateValues resize count _private; // not initialized variables -- nil
+            _dsplPrivateValues resize count _private; // not initialized variables — nil
 
             _confDialog call {
                 private ["_walk", "_idc"];
@@ -135,13 +133,26 @@ _funcCreateDialog = {
                 };
             };
 
+            // find a free place (nil) in the global storage
+            _storage = __getStorage; // link on global storage
+            _dsplDataIndex = 0 call {
+                for "_i" from 0 to count _storage do {
+                    _this = _storage select _i;
+                    if (isNil "_this") exitwith {_i};
+                }
+            };
+
             // export into user-code
-            #define export(name) __push(_private,__quoted(name)); __push(_dsplPrivateValues,name);
+            #define export(name) __push(_private,__q(name)); __push(_dsplPrivateValues,name);
 
             export(_display);
             export(_dsplMapCtrls);
             export(_dsplMapConfs);
             export(_dsplGetConfByCtrl);
+
+            _dsplSpawn = compile format ['_this spawn { disableSerialization; __1 = __getStorage select %1; [__1 select 1, _this select 0, _this select 1] call (__1 select 0)}', _dsplDataIndex];
+
+            export(_dsplSpawn);
 
             _loadCode = ""; // loader of variables
             _saveCode = ""; // unloader of variables
@@ -152,7 +163,7 @@ _funcCreateDialog = {
             };
 
             // create a template of native handlers
-            // %1 -- _ehIndex
+            // %1 — _ehIndex
             _ehTpl = '__ret = false; __1 = __getStorage select %1; [__1 select 1, _this, (__1 select 2) select %2] call (__1 select 0); __ret;';
             _destructorTpl = '__1 = __getStorage select %1; [__1 select 1, _this, __1 select 3] call (__1 select 0); __getStorage set [%1, nil]';
 
@@ -163,15 +174,6 @@ _funcCreateDialog = {
                 'private "__1"; __2 = _this select 0; ' + _loadCode +
                 'call { private "__2"; (_this select 1) call (_this select 2) }; ' + _saveCode
             );
-
-            // find a free place (nil) in the global storage
-            _storage = __getStorage; // link on global storage
-            _dsplDataIndex = 0 call {
-                for "_i" from 0 to count _storage do {
-                    _this = _storage select _i;
-                    if (isNil "_this") exitwith {_i};
-                }
-            };
 
             _handlersList = [];
 

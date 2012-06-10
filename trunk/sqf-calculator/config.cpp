@@ -1,7 +1,7 @@
 // ARMA2
 
 class CfgPatches {
-    class SqfCalculator {
+    class SQFCalculator {
         units[] = {};
         weapons[] = {};
         requiredVersion = 0.1;
@@ -10,14 +10,14 @@ class CfgPatches {
 };
 
 class CfgMods {
-    class RLS {
-        dir = "@\sqf-calculator";
-        name = "SQF-Calculator";
-        picture = "";
+    class SQFCalculator {
+        dir         = "sqf-calculator";
+        name        = "Script console «Calculator»";
+        picture     = "";   
         hidePicture = "true";
-        hideName = "true";
-        actionName = "$str/vdmj/sqf-calculator/mod.cpp.action-name";
-        action = "http://code.google.com/p/arma2-sqf-calculator/";
+        hideName    = "false";
+        actionName  = "$str/vdmj/sqf-calculator/mod.cpp.action-name";
+        action      = "http://code.google.com/p/arma2-sqf-calculator/";
     };
 };
 
@@ -43,7 +43,7 @@ class RscStructuredText;
 //class RscStandardDisplay;
 class RscDisplayEmpty;
 
-__EXEC( call compile preprocessFileLineNumbers '\sqf-calculator\getSettingsToParsingNamespace.sqf' );
+__EXEC( call compile preprocessFileLineNumbers '\sqf-calculator\read-settings.sqf' );
 
 #define setOnKeyDownEH_ onKeyDown = "if((_this select 1)==(parsingNamespace getVariable '/sqf-calculator/HKOpenConsole'))then{if(isNil{missionNamespace getVariable'\sqf-calculator\calc.sqf'})then{missionNamespace setVariable['\sqf-calculator\calc.sqf',compile preprocessFileLineNumbers'\sqf-calculator\calc.sqf']};(_this select 0)call(missionNamespace getVariable'\sqf-calculator\calc.sqf')}else{_this execVM'\ca\ui\scripts\mainmenuShortcuts.sqf'};nil";
 #define setOnKeyDownEH onKeyDown = "if((_this select 1)==(parsingNamespace getVariable '/sqf-calculator/HKOpenConsole'))then{if(isNil{missionNamespace getVariable'\sqf-calculator\calc.sqf'})then{missionNamespace setVariable['\sqf-calculator\calc.sqf',compile preprocessFileLineNumbers'\sqf-calculator\calc.sqf']};(_this select 0)call(missionNamespace getVariable'\sqf-calculator\calc.sqf')};nil";

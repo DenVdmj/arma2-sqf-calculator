@@ -11,7 +11,8 @@
 #define __Q(VALUE) #VALUE
 #define __L(VALUE) __Q(__STRINGTABLE_PREFIX/VALUE)
 #define L(VALUE) __EVAL(localize __L(VALUE))
-#define FORMAT_L(TPL,VALUE) __EVAL(format [TPL, localize __L(VALUE)])
+#define LFORMAT(TPL,VALUE) __EVAL(format [TPL, localize __L(VALUE)])
+#define LFILE(FILENAME) __EVAL(format["sqf-calculator\locale\%1\%2", localize "str/vdmj/sqf-calculator/locale", __Q(FILENAME)])
 
 #define fontsize 0.034
 
@@ -184,7 +185,7 @@ class RscVdmjSqfCalculator {
                 align = "center";
                 shadow = 1;
             };
-            text = FORMAT_L("<t size='1.3' align='center'>%1</t>",title);
+            text = LFORMAT("<t size='1.3' align='center'>%1</t>",title);
             moving = 1;
         };
     };
@@ -207,7 +208,7 @@ class RscVdmjSqfCalculator {
                     rows = 1;
                     columns = 6;
                     strings[] = {
-                        L(formated),
+                        L(formated), 
                         L(display),
                         L(history),
                         L(processes),
@@ -264,7 +265,7 @@ class RscVdmjSqfCalculator {
                             idc = 1205;
                             RECT(0, 0, .96, .8);
                             colorBorder[] = {0, 0, 0, 1};
-                            filename = L(demo-void-file);
+                            filename = LFILE(demo.html);
                             cycleLinks = 1;
                             cycleAllLinks = 1;
                         };
@@ -277,7 +278,7 @@ class RscVdmjSqfCalculator {
                         class Help: RscRLSHTML {
                             idc = 1206;
                             RECT(0, 0, .96, 2.4);
-                            filename = L(help-file);
+                            filename = LFILE(help.html);
                             cycleLinks = 1;
                             cycleAllLinks = 1;
                         };
