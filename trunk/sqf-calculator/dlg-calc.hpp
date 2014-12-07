@@ -6,7 +6,6 @@
     w=__EVAL(W); \
     h=__EVAL(H)
 
-
 #define __STRINGTABLE_PREFIX str/vdmj/sqf-calculator
 #define __Q(VALUE) #VALUE
 #define __L(VALUE) __Q(__STRINGTABLE_PREFIX/VALUE)
@@ -208,7 +207,7 @@ class RscVdmjSqfCalculator {
                     rows = 1;
                     columns = 6;
                     strings[] = {
-                        L(formated), 
+                        L(formated),
                         L(display),
                         L(history),
                         L(processes),

@@ -4,8 +4,12 @@
 rem Read install path of BinPBO.exe programm
 call :RegRead "BinPBOPath" "HKLM\SOFTWARE\Bohemia Interactive\BinPBO Personal Edition" "MAIN"
 
+rem Read install path of BinMake.exe and subsidiaries programms
+call :RegRead "BinMakePath" "HKLM\SOFTWARE\Bohemia Interactive\BinMake" "MAIN"
+
 rem Read install path of ArmA2 game
 call :RegRead "ArmA2Path" "HKLM\SOFTWARE\Bohemia Interactive Studio\ArmA 2" "MAIN"
+
 
 rem Relative path of addon folder
 call :CanonizePath "TargetAddonDir" "%ArmA2Path%\%RelativeModDir%\addons"
@@ -16,6 +20,7 @@ if not exist %TargetAddonDir% (
 )
 
 if exist "mod.cpp" (
+    rem "%BinMakePath%\CfgConvert\CfgConvert.exe" -bin -dst "%TargetAddonDir%/../mod.bin" "mod.cpp"
     copy "mod.cpp" "%TargetAddonDir%/../mod.cpp"
 )
 
@@ -45,10 +50,11 @@ rem ============================================================================
 
     for /D %%i in (%~1) do (
         if exist "%TargetAddonDir%\%%~ni.pbo" (
+            echo del "%TargetAddonDir%\%%~ni.*"
             del "%TargetAddonDir%\%%~ni.*"
         )
         if "%Binarize%"=="on" (
-            "%BinPBOPath%\BinPBO.exe" "%%~i" "%TargetAddonDir%" -BINARIZE -TEMP "%temp_binarize_pbos%" %includeMaskfile%
+            "%BinPBOPath%\BinPBO.exe" "%%~i" "%TargetAddonDir%" -BINARIZE %USEPREFIX% -TEMP "%temp_binarize_pbos%" %includeMaskfile%
         ) else (
             "%BinPBOPath%\BinPBO.exe" "%%~i" "%TargetAddonDir%" %includeMaskfile%
         )
@@ -68,9 +74,9 @@ rem ============================================================================
     if "%Sign%"=="on" (
         call :ReadBiPrivateKey "biprivatekey.private" "biprivatekey"
 
-        for %%i in ("%TargetAddonDir%\*.pbo") do (
-            echo Sign file "%%~i" by "!biprivatekey!"
-            "%BinPBOPath%\DSSignFile\DSSignFile.exe" "!biprivatekey!" "%%~i"
+        for /D %%i in (%~1) do (
+            echo Sign file "%TargetAddonDir%\%%~ni.pbo" by "!biprivatekey!"
+            "%BinPBOPath%\DSSignFile\DSSignFile.exe" "!biprivatekey!" "%TargetAddonDir%\%%~ni.pbo"
         )
 
         if "!biprivatekey!"=="" (
@@ -114,8 +120,13 @@ goto :eof
 goto :eof
 
 :GetRevisionNumber
-    for /F "usebackq tokens=1,2" %%i in ("%~dp0..\.hg\cache\tags") do (
-        set %~1=%%j
+    if exist "%~dp0..\.hg\cache\tags" (
+        for /F "usebackq tokens=1,2" %%i in ("%~dp0..\.hg\cache\tags") do (
+            echo Revision number: %%j
+            set %~1=%%j
+        )
+    ) else (
+        echo Fails to identify the revision number. Folder not found: "%~dp0..\.hg\cache\tags"
     )
 goto :eof
 

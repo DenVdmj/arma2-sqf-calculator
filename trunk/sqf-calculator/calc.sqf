@@ -108,7 +108,7 @@ _self = _this;
         "ResultFormated", "KeyDown", {
             if (__argCtrlPressed) exitwith {
                 if (
-                    __argKeyCode == DIK_C || 
+                    __argKeyCode == DIK_C ||
                     __argKeyCode == DIK_INSERT
                 ) exitwith {
                     __argSelf call _copyFromListBoxToClipboard
@@ -196,6 +196,29 @@ _self = _this;
                     if (ctrlShown (_windowStruct select _i)) exitwith { _i }; 0
                 }
             ) + _this) % count _windowStruct
+        };
+        _setCustomView = {
+            private ["_d", "_c"];
+            _ctrlMainback ctrlSetText "#(argb,8,8,3)color(0,0,0,0.8)";
+            _ctrlMainback ctrlSetPosition [0, -.01, 1, 1.02];
+            _ctrlMainback ctrlCommit 0;
+            {
+                _x ctrlSetFont "vdmj_PragmataPro"; // "vdmj_Consolas"
+                _x ctrlSetFontHeight .028
+            } forEach [
+                _ctrlInputText,
+                _ctrlSelectWin,
+                _ctrlConfigOutputModeButton,
+                _ctrlWatchButton,
+                _ctrlResultFormated,
+                _ctrlResultText,
+                _ctrlHistoryList,
+                _ctrlProcessList,
+                _ctrlDemoFrame,
+                _ctrlDemo,
+                _ctrlHelpFrame,
+                _ctrlHelp
+            ];
         };
         _updateHistory = {
             lbClear _ctrlHistoryList;
@@ -628,11 +651,14 @@ _self = _this;
 
         _privateNames = _private; // save private names
 
+        call _setCustomView;
+
         // initialization
         _accTime = accTime;
         _soundVolume = soundVolume;
         setAccTime 0;
         0 fadeSound 0;
+        "DynamicBlur" ppEffectEnable false;
 
         _configOutputMode = 1;
 

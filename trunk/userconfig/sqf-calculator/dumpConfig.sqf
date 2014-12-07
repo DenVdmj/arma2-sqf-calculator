@@ -7,15 +7,15 @@
 /*
 ======================================================================================
 
-Dump config to the clipboard:
+Dump the game config to the clipboard:
 
     [config HNDL, bool IncludeInheritedPropertiesFlag] call compile preprocessFileLineNumbers "dumpConfig.sqf"
 
-This example put section CfgVehicles on the clipboard:
+This example puts the section CfgVehicles on the clipboard:
 
     [configFile >> "CfgVehicles"] call compile preprocessFileLineNumbers "dumpConfig.sqf"
 
-This example will put on the clipboard class "RscDisplayArcadeUnit", all classes will contain all heritable properties, so you get a full and self-sufficient class, independent from the other classes.
+This example will put the class "RscDisplayArcadeUnit" on the clipboard, all classes will contain all heritable properties, so you'll get a full and self-sufficient class, independent from the other classes.
 
     [configFile >> "RscDisplayArcadeUnit", true] call compile preprocessFileLineNumbers "dumpConfig.sqf"
 
@@ -240,8 +240,8 @@ _dumpConfigTree = {
     };
 
     if (typeName arg(0) == "ARRAY") then {
-        { 
-            _x call _traverse; 
+        {
+            _x call _traverse;
         } foreach arg(0);
     } else {
         arg(0) call _traverse;

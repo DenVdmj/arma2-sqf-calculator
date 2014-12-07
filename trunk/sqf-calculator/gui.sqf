@@ -7,6 +7,7 @@
 
 #define __setStorage __uiSet(CreateDialog/Storage)
 #define __getStorage __uiGet(CreateDialog/Storage)
+#undef _
 
 if (isNil{__getStorage}) then { [] __setStorage };
 
@@ -158,8 +159,8 @@ func(CreateDialog) = {
             _saveCode = ""; // unloader of variables
 
             for "_i" from 0 to count _private - 1 do {
-                _loadCode = _loadCode + format ["%1 = __2 select %2;", _private select _i, _i];
-                _saveCode = _saveCode + format ["__2 set [%2, %1];", _private select _i, _i];
+                _loadCode = _loadCode + format ["%1 = _ select %2;", _private select _i, _i];
+                _saveCode = _saveCode + format ["_ set [%2, %1];", _private select _i, _i];
             };
 
             // create a template of native handlers
@@ -171,8 +172,8 @@ func(CreateDialog) = {
             // args: [_dsplPrivateValues, originThis, userEventHandler] call _eventHandlerExecutor
 
             _eventHandlerExecutor = compile (
-                'private "__1"; __2 = _this select 0; ' + _loadCode +
-                'call { private "__2"; (_this select 1) call (_this select 2) }; ' + _saveCode
+                'private"__1";_=_this select 0;' + _loadCode +
+                'call{private"_";(_this select 1)call(_this select 2)}; ' + _saveCode
             );
 
             _handlersList = [];

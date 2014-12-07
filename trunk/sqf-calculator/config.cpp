@@ -12,10 +12,10 @@ class CfgPatches {
 class CfgMods {
     class SQFCalculator {
         dir         = "sqf-calculator";
-        name        = "Script console «Calculator»";
-        picture     = "";   
-        hidePicture = "true";
-        hideName    = "false";
+        name        = "$str/vdmj/sqf-calculator/mod.cpp.name";
+        picture     = ;
+        hidePicture = 0;
+        hideName    = 0;
         actionName  = "$str/vdmj/sqf-calculator/mod.cpp.action-name";
         action      = "http://code.google.com/p/arma2-sqf-calculator/";
     };
@@ -68,4 +68,3 @@ class RscDisplayDiary { setOnKeyDownEH };
 
 #include "dlg-defines.hpp"
 #include "dlg-calc.hpp"
-
